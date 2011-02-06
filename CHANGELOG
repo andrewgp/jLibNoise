@@ -1,3 +1,10 @@
+2011-02-06
+
+- Added NoiseMapBuilderSphere
+- Added more junit tests
+- Added image output comparison with reference images from LibNoise
+- Bug Found Octave support for the Perlin module may not be completely correct, fails for at least oct=1
+
 2011-02-05
 
 - Ported enough of the code to get a few of the libnoise tutorials working well (as junit tests)

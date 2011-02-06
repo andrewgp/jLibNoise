@@ -111,7 +111,7 @@ public class WriterBMP {
     public void WriteDestFile() throws IOException {
         int width = m_pSourceImage.GetWidth();
         int height = m_pSourceImage.GetHeight();
-        BufferedImage img = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
+        BufferedImage img = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
 
 //        OutputStreamWriter os = new OutputStreamWriter(new BufferedOutputStream(new FileOutputStream(new File("d:/java.txt"))));
 
