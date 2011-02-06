@@ -1,1 +1,8 @@
-Pure Java Port of LibNoise (A portable, open-source, coherent noise-generating library for c++ - http://libnoise.sourceforge.net)
+Pure Java Port of 'LibNoise' (A portable, open-source, coherent noise-generating library for c++ - http://libnoise.sourceforge.net)
+-----
+
+The primary aim is to provide a version that's completely compatible with the original LibNoise.
+
+Early stages at the moment, but I hope to have a fully functional direct-port of the c++ library available soon.
+
+At the moment I have a functional build up of the core features.
