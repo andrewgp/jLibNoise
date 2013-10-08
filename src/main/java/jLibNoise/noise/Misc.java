@@ -39,7 +39,7 @@ public abstract class Misc {
      *         lowerBound if @a value is less than @a lowerBound.
      *         upperBound if @a value is greater than @a upperBound.
      */
-    public static int ClampValue(int value, int lowerBound, int upperBound) {
+    public static int clampValue(int value, int lowerBound, int upperBound) {
         if (value < lowerBound) {
             return lowerBound;
         } else if (value > upperBound) {
@@ -56,8 +56,7 @@ public abstract class Misc {
      * @param <T>
      * @return The maximum of the two values.
      */
-    public static <T extends Comparable<T>> T GetMax(T a, T b)
-    {
+    public static <T extends Comparable<T>> T GetMax(T a, T b) {
         return (a.compareTo(b) > 0 ? a : b);
     }
 }

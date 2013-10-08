@@ -21,7 +21,6 @@
  * The developer's email is jlbezigvins@gmzigail.com (for great email, take
  * off every 'zig'.)
  */
-
 package jLibNoise.noise;
 
 /**
@@ -38,7 +37,7 @@ public class Vectortable {
      * Chapter 5 - Implementing Improved Perlin Noise by Ken Perlin,
      * specifically page 76.
      */
-    public static final double[] g_randomVectors = {
+    public static final double[] randomVectors = {
             -0.763874, -0.596439, -0.246489, 0.0,
             0.396055, 0.904518, -0.158073, 0.0,
             -0.499004, -0.8665, -0.0131631, 0.0,

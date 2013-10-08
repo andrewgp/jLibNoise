@@ -21,7 +21,6 @@
  * The developer's email is jlbezigvins@gmzigail.com (for great email, take
  * off every 'zig'.)
  */
-
 package jLibNoise.noise.utils;
 
 /**

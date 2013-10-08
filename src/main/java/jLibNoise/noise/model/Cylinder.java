@@ -21,7 +21,6 @@
  * The developer's email is jlbezigvins@gmzigail.com (for great email, take
  * off every 'zig'.)
  */
-
 package jLibNoise.noise.model;
 
 import jLibNoise.noise.MathConst;
@@ -48,10 +47,9 @@ import jLibNoise.noise.module.Module;
 public class Cylinder {
 
     // A pointer to the noise module used to generate the output values.
-    private Module m_pModule;
+    private Module module;
 
     public Cylinder() {
-
     }
 
     /**
@@ -60,7 +58,7 @@ public class Cylinder {
      * @param module The noise module that is used to generate the output values.
      */
     public Cylinder(Module module) {
-        m_pModule = module;
+        this.module = module;
     }
 
     /**
@@ -69,8 +67,8 @@ public class Cylinder {
      * @return A reference to the noise module.
      * @pre A noise module was passed to the SetModule() method.
      */
-    public Module GetModule() {
-        return m_pModule;
+    public Module getModule() {
+        return module;
     }
 
 
@@ -90,14 +88,14 @@ public class Cylinder {
      * @param height The height along the @a y axis.
      * @return The output value from the noise module.
      */
-    public double GetValue(double angle, double height) {
-        assert (m_pModule != null);
+    public double getValue(double angle, double height) {
+        assert (module != null);
 
         double x, y, z;
         x = Math.cos(angle * MathConst.DEG_TO_RAD);
         y = height;
         z = Math.sin(angle * MathConst.DEG_TO_RAD);
-        return m_pModule.GetValue(x, y, z);
+        return module.getValue(x, y, z);
     }
 
     /**
@@ -108,7 +106,7 @@ public class Cylinder {
      *
      * @param module The noise module that is used to generate the output values.
      */
-    public void SetModule(Module module) {
-        m_pModule = module;
+    public void setModule(Module module) {
+        this.module = module;
     }
 }

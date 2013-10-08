@@ -40,7 +40,7 @@ public abstract class LatLon {
      * @pre lat must range from @b -90 to @b +90.
      * @pre lon must range from @b -180 to @b +180.
      */
-    public static double[] LatLonToXYZ(double lat, double lon) {
+    public static double[] latLonToXYZ(double lat, double lon) {
         double r = Math.cos(MathConst.DEG_TO_RAD * lat);
         double x, y, z;
         x = r * Math.cos(MathConst.DEG_TO_RAD * lon);

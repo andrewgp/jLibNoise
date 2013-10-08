@@ -21,26 +21,6 @@
  * The developer's email is jlbezigvins@gmzigail.com (for great email, take
  * off every 'zig'.)
  */
-
-/*
- * This library is free software; you can redistribute it and/or modify it
- * under the terms of the GNU Lesser General Public License as published by
- * the Free Software Foundation; either version 2.1 of the License, or (at
- * your option) any later version.
- *
- * This library is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
- * FITNESS FOR A PARTICULAR PURPOSE.  See the GNU Lesser General Public
- * License (COPYING.txt) for more details.
- *
- * You should have received a copy of the GNU Lesser General Public License
- * along with this library; if not, write to the Free Software Foundation,
- * Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
- *
- * The developer's email is jlbezigvins@gmzigail.com (for great email, take
- * off every 'zig'.)
- */
-
 package jLibNoise.noise.module;
 
 import jLibNoise.noise.ExceptionInvalidParam;
@@ -55,13 +35,13 @@ import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 public abstract class Module {
 
     // An array containing the pointers to each source module required by this noise module.
-    protected Module[] m_pSourceModule;
+    protected Module[] sourceModule;
 
     public Module(int sourceModuleCount) {
         // Create an array of pointers to all source modules required by this
         // noise module.
         if (sourceModuleCount > 0) {
-            m_pSourceModule = new Module[sourceModuleCount];
+            sourceModule = new Module[sourceModuleCount];
         }
     }
 
@@ -80,17 +60,17 @@ public abstract class Module {
      * @pre A source module with the specified index value has been added
      * to this noise module via a call to SetSourceModule().
      */
-    public Module GetSourceModule(int index) {
-        assert (m_pSourceModule != null);
+    public Module getSourceModule(int index) {
+        assert (sourceModule != null);
 
         // The following fix was provided by Will Hawkins:
         // m_pSourceModule[index] != NULL
         // was incorrect; it should be:
         // m_pSourceModule[index] == NULL
-        if (index >= GetSourceModuleCount() || index < 0 || m_pSourceModule[index] == null) {
+        if (index >= getSourceModuleCount() || index < 0 || sourceModule[index] == null) {
             throw new ExceptionNoModule();
         }
-        return m_pSourceModule[index];
+        return sourceModule[index];
     }
 
     /**
@@ -99,7 +79,7 @@ public abstract class Module {
      *
      * @return The number of source modules required by this noise module.
      */
-    public int GetSourceModuleCount() {
+    public int getSourceModuleCount() {
         throw new NotImplementedException();
     }
 
@@ -122,7 +102,7 @@ public abstract class Module {
      * @pre All source modules required by this noise module have been
      * passed to the SetSourceModule() method.
      */
-    public abstract double GetValue(double x, double y, double z);
+    public abstract double getValue(double x, double y, double z);
 
     /**
      * Connects a source module to this noise module.
@@ -153,12 +133,11 @@ public abstract class Module {
      * @pre The index value ranges from 0 to one less than the number of
      * source modules required by this noise module.
      */
-    public void SetSourceModule(int index, Module sourceModule) {
-        assert (m_pSourceModule != null);
-        if (index >= GetSourceModuleCount() || index < 0) {
+    public void setSourceModule(int index, Module sourceModule) {
+        assert (this.sourceModule != null);
+        if (index >= getSourceModuleCount() || index < 0) {
             throw new ExceptionInvalidParam();
         }
-        m_pSourceModule[index] = sourceModule;
+        this.sourceModule[index] = sourceModule;
     }
-
 }

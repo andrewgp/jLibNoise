@@ -21,7 +21,6 @@
  * The developer's email is jlbezigvins@gmzigail.com (for great email, take
  * off every 'zig'.)
  */
-
 package jLibNoise.noise.utils;
 
 import jLibNoise.noise.ExceptionInvalidParam;
@@ -50,52 +49,52 @@ import jLibNoise.noise.model.Sphere;
 public class NoiseMapBuilderSphere extends NoiseMapBuilder {
 
     // Eastern boundary of the spherical noise map, in degrees.
-    private double m_eastLonBound;
+    private double eastLonBound;
     // Northern boundary of the spherical noise map, in degrees.
-    private double m_northLatBound;
+    private double northLatBound;
     // Southern boundary of the spherical noise map, in degrees.
-    private double m_southLatBound;
+    private double southLatBound;
     // Western boundary of the spherical noise map, in degrees.
-    private double m_westLonBound;
+    private double westLonBound;
 
     @Override
-    public void Build() {
-        if (m_eastLonBound <= m_westLonBound
-                || m_northLatBound <= m_southLatBound
-                || m_destWidth <= 0
-                || m_destHeight <= 0
-                || m_pSourceModule == null
-                || m_pDestNoiseMap == null) {
+    public void build() {
+        if (eastLonBound <= westLonBound
+                || northLatBound <= southLatBound
+                || destWidth <= 0
+                || destHeight <= 0
+                || sourceModule == null
+                || destNoiseMap == null) {
             throw new ExceptionInvalidParam();
         }
 
         // Resize the destination noise map so that it can store the new output
         // values from the source model.
-        m_pDestNoiseMap.SetSize(m_destWidth, m_destHeight);
+        destNoiseMap.setSize(destWidth, destHeight);
 
         // Create the plane model.
         Sphere sphereModel = new Sphere();
-        sphereModel.SetModule(m_pSourceModule);
+        sphereModel.setModule(sourceModule);
 
-        double lonExtent = m_eastLonBound - m_westLonBound;
-        double latExtent = m_northLatBound - m_southLatBound;
-        double xDelta = lonExtent / (double) m_destWidth;
-        double yDelta = latExtent / (double) m_destHeight;
-        double curLon = m_westLonBound;
-        double curLat = m_southLatBound;
+        double lonExtent = eastLonBound - westLonBound;
+        double latExtent = northLatBound - southLatBound;
+        double xDelta = lonExtent / (double) destWidth;
+        double yDelta = latExtent / (double) destHeight;
+        double curLon = westLonBound;
+        double curLat = southLatBound;
 
         // Fill every point in the noise map with the output values from the model.
-        ArrayPointer.NativeFloatPrim pDest = m_pDestNoiseMap.GetSlabPtr(0);
-        for (int y = 0; y < m_destHeight; y++) {
-            curLon = m_westLonBound;
-            for (int x = 0; x < m_destWidth; x++) {
-                float curValue = (float) sphereModel.GetValue(curLat, curLon);
+        ArrayPointer.NativeFloatPrim pDest = destNoiseMap.getSlabPtr(0);
+        for (int y = 0; y < destHeight; y++) {
+            curLon = westLonBound;
+            for (int x = 0; x < destWidth; x++) {
+                float curValue = (float) sphereModel.getValue(curLat, curLon);
                 pDest.floatAssignThenIncrementPosition(curValue);
                 curLon += xDelta;
             }
             curLat += yDelta;
-            if (m_pCallback != null) {
-                m_pCallback.callback(y);
+            if (callback != null) {
+                callback.callback(y);
             }
         }
     }
@@ -105,8 +104,8 @@ public class NoiseMapBuilderSphere extends NoiseMapBuilder {
      *
      * @return The eastern boundary of the noise map, in degrees.
      */
-    public double GetEastLonBound() {
-        return m_eastLonBound;
+    public double getEastLonBound() {
+        return eastLonBound;
     }
 
     /**
@@ -114,8 +113,8 @@ public class NoiseMapBuilderSphere extends NoiseMapBuilder {
      *
      * @return The northern boundary of the noise map, in degrees.
      */
-    public double GetNorthLatBound() {
-        return m_northLatBound;
+    public double getNorthLatBound() {
+        return northLatBound;
     }
 
     /**
@@ -123,8 +122,8 @@ public class NoiseMapBuilderSphere extends NoiseMapBuilder {
      *
      * @return The southern boundary of the noise map, in degrees.
      */
-    public double GetSouthLatBound() {
-        return m_southLatBound;
+    public double getSouthLatBound() {
+        return southLatBound;
     }
 
     /**
@@ -132,8 +131,8 @@ public class NoiseMapBuilderSphere extends NoiseMapBuilder {
      *
      * @return The western boundary of the noise map, in degrees.
      */
-    public double GetWestLonBound() {
-        return m_westLonBound;
+    public double getWestLonBound() {
+        return westLonBound;
     }
 
     /**
@@ -147,14 +146,14 @@ public class NoiseMapBuilderSphere extends NoiseMapBuilder {
      * @pre The western boundary is less than the eastern boundary.
      * @throws ExceptionInvalidParam See the preconditions.
      */
-    public void SetBounds(double southLatBound, double northLatBound, double westLonBound, double eastLonBound) {
+    public void setBounds(double southLatBound, double northLatBound, double westLonBound, double eastLonBound) {
         if (southLatBound >= northLatBound || westLonBound >= eastLonBound) {
             throw new ExceptionInvalidParam();
         }
 
-        m_southLatBound = southLatBound;
-        m_northLatBound = northLatBound;
-        m_westLonBound = westLonBound;
-        m_eastLonBound = eastLonBound;
+        southLatBound = southLatBound;
+        northLatBound = northLatBound;
+        westLonBound = westLonBound;
+        eastLonBound = eastLonBound;
     }
 }

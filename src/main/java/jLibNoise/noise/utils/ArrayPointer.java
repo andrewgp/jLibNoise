@@ -21,7 +21,6 @@
  * The developer's email is jlbezigvins@gmzigail.com (for great email, take
  * off every 'zig'.)
  */
-
 package jLibNoise.noise.utils;
 
 /**
@@ -44,7 +43,6 @@ public class ArrayPointer<T> implements Pointer<T> {
     public void assignThenIncrementPosition(T value) {
         array[position] = value;
         position++;
-//        System.out.println(position);
     }
 
     public T get() {
@@ -53,6 +51,14 @@ public class ArrayPointer<T> implements Pointer<T> {
 
     public void increment() {
         position++;
+    }
+
+    public int getSize() {
+        return array.length;
+    }
+
+    public void copyTo(ArrayPointer<T> dest) {
+        System.arraycopy(array, position, dest.array, position, getSize() - position);
     }
 
     public static class NativeFloatPrim {
@@ -80,6 +86,10 @@ public class ArrayPointer<T> implements Pointer<T> {
 
         public void increment() {
             position++;
+        }
+
+        public void copyTo(NativeFloatPrim dest, int size) {
+            System.arraycopy(array, position, dest, position, size);
         }
     }
     

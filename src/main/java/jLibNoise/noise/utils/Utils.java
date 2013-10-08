@@ -21,7 +21,6 @@
  * The developer's email is jlbezigvins@gmzigail.com (for great email, take
  * off every 'zig'.)
  */
-
 package jLibNoise.noise.utils;
 
 /**
@@ -37,7 +36,7 @@ public abstract class Utils {
      * @param alpha
      * @return
      */
-    public static short BlendChannel(short channel0, short channel1, float alpha) {
+    public static short blendChannel(short channel0, short channel1, float alpha) {
         float c0 = (float) channel0 / 255.0f;
         float c1 = (float) channel1 / 255.0f;
         return (short) (((c1 * alpha) + (c0 * (1.0f - alpha))) * 255.0f);
@@ -51,11 +50,11 @@ public abstract class Utils {
      * @param alpha
      * @param out
      */
-    public static void LinearInterpColor(Color color0, Color color1, float alpha, Color out) {
-        out.alpha = BlendChannel(color0.alpha, color1.alpha, alpha);
-        out.blue = BlendChannel(color0.blue, color1.blue, alpha);
-        out.green = BlendChannel(color0.green, color1.green, alpha);
-        out.red = BlendChannel(color0.red, color1.red, alpha);
+    public static void linearInterpColor(Color color0, Color color1, float alpha, Color out) {
+        out.alpha = blendChannel(color0.alpha, color1.alpha, alpha);
+        out.blue = blendChannel(color0.blue, color1.blue, alpha);
+        out.green = blendChannel(color0.green, color1.green, alpha);
+        out.red = blendChannel(color0.red, color1.red, alpha);
     }
 
     /**
@@ -66,9 +65,9 @@ public abstract class Utils {
      * @param value
      * @return
      */
-    public static byte[] UnpackFloat(byte[] bytes, float value) {
+    public static byte[] unpackFloat(byte[] bytes, float value) {
         int intBits = Float.floatToRawIntBits(value);
-        return UnpackLittle32(bytes, intBits);
+        return unpackLittle32(bytes, intBits);
     }
 
     /**
@@ -78,7 +77,7 @@ public abstract class Utils {
      * @param integer
      * @return
      */
-    public static byte[] UnpackLittle16(byte[] bytes, short integer) {
+    public static byte[] unpackLittle16(byte[] bytes, short integer) {
         bytes[1] = (byte) ((integer & 0x00ff));
         bytes[0] = (byte) ((integer & 0xff00) >> 8);
         return bytes;
@@ -91,7 +90,7 @@ public abstract class Utils {
      * @param integer
      * @return
      */
-    public static byte[] UnpackLittle32(byte[] bytes, int integer) {
+    public static byte[] unpackLittle32(byte[] bytes, int integer) {
         bytes[3] = (byte) ((integer & 0x000000ff));
         bytes[2] = (byte) ((integer & 0x0000ff00) >> 8);
         bytes[1] = (byte) ((integer & 0x00ff0000) >> 16);

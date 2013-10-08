@@ -21,50 +21,47 @@
  * The developer's email is jlbezigvins@gmzigail.com (for great email, take
  * off every 'zig'.)
  */
-
 package jLibNoise.noise.utils;
 
 import jLibNoise.noise.ExceptionInvalidParam;
-
-import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
-import java.io.*;
+import java.io.File;
+import java.io.IOException;
+import javax.imageio.ImageIO;
 
 /**
  * Windows bitmap image writer class.
  *
- * This class creates a file in Windows bitmap (*.bmp) format given the
- * contents of an image object.
+ * This class creates a file in Windows bitmap (*.bmp) format given the contents
+ * of an image object.
  *
  * <b>Writing the image</b>
  *
- * To write the image to a file, perform the following steps:
- * - Pass the filename to the SetDestFilename() method.
- * - Pass an Image object to the SetSourceImage() method.
- * - Call the WriteDestFile() method.
+ * To write the image to a file, perform the following steps: - Pass the
+ * filename to the SetDestFilename() method. - Pass an Image object to the
+ * SetSourceImage() method. - Call the WriteDestFile() method.
  *
- * The SetDestFilename() and SetSourceImage() methods must be called
- * before calling the WriteDestFile() method.
+ * The SetDestFilename() and SetSourceImage() methods must be called before
+ * calling the WriteDestFile() method.
  */
 public class WriterBMP {
 
     public static final int BMP_HEADER_SIZE = 54;
-
     // Name of the file to write.
-    protected String m_destFilename;
+    protected String destFilename;
     // A pointer to the image object that will be written to the file.
-    protected Image m_pSourceImage;
+    protected Image sourceImage;
 
     public WriterBMP() {
     }
 
     /**
      * Returns the name of the file to write.
+     *
      * @return The name of the file to write.
      */
-    public String GetDestFilename ()
-    {
-      return m_destFilename;
+    public String getDestFilename() {
+        return destFilename;
     }
 
     /**
@@ -74,24 +71,21 @@ public class WriterBMP {
      *
      * @param filename The name of the file to write.
      */
-    public void SetDestFilename (String filename)
-    {
-      m_destFilename = filename;
+    public void setDestFilename(String filename) {
+        destFilename = filename;
     }
 
     /**
      * Sets the image object that is written to the file.
      *
-     * This object only stores a pointer to an image object, so make sure
-     * this object exists before calling the WriteDestFile() method.
+     * This object only stores a pointer to an image object, so make sure this
+     * object exists before calling the WriteDestFile() method.
      *
      * @param sourceImage The image object to write.
      */
-    public void SetSourceImage (Image sourceImage)
-    {
-      m_pSourceImage = sourceImage;
+    public void setSourceImage(Image sourceImage) {
+        this.sourceImage = sourceImage;
     }
-
 
     /**
      * Writes the contents of the image object to the file.
@@ -100,17 +94,17 @@ public class WriterBMP {
      * @pre SetSourceImage() has been previously called.
      * @throws jLibNoise.noise.ExceptionInvalidParam See the preconditions.
      * @throws jLibNoise.noise.ExceptionOutOfMemory Out of memory.
-     * @throws Exception An unknown exception occurred.
-     * Possibly the file could not be written.
+     * @throws Exception An unknown exception occurred. Possibly the file could
+     * not be written.
      * <p/>
-     * This method encodes the contents of the image and writes it to a
-     * file.  Before calling this method, call the SetSourceImage()
-     * method to specify the image, then call the SetDestFilename()
-     * method to specify the name of the file to write.
+     * This method encodes the contents of the image and writes it to a file.
+     * Before calling this method, call the SetSourceImage() method to specify
+     * the image, then call the SetDestFilename() method to specify the name of
+     * the file to write.
      */
-    public void WriteDestFile() throws IOException {
-        int width = m_pSourceImage.GetWidth();
-        int height = m_pSourceImage.GetHeight();
+    public void writeDestFile() throws IOException {
+        int width = sourceImage.getWidth();
+        int height = sourceImage.getHeight();
         BufferedImage img = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
 
 //        OutputStreamWriter os = new OutputStreamWriter(new BufferedOutputStream(new FileOutputStream(new File("d:/java.txt"))));
@@ -120,7 +114,7 @@ public class WriterBMP {
         for (int y = height - 1; y >= 0; y--) {
             for (int x = 0; x < width; x++) {
                 int pos = x + (y * width);
-                jLibNoise.noise.utils.Color clr = m_pSourceImage.m_pImage[pos];
+                jLibNoise.noise.utils.Color clr = sourceImage.image[pos];
                 pixels[index] = new java.awt.Color(clr.red, clr.green, clr.blue, clr.alpha).getRGB();
                 index++;
 
@@ -131,7 +125,7 @@ public class WriterBMP {
 
         img.setRGB(0, 0, width, height, pixels, 0, width);
 
-        ImageIO.write(img, "png", new File(m_destFilename));
+        ImageIO.write(img, "png", new File(destFilename));
 
 //        os.close();
 
@@ -193,13 +187,13 @@ public class WriterBMP {
     /**
      * Calculates the width of one horizontal line in the file, in bytes.
      *
-     * Windows bitmap files require that the width of one horizontal line
-     * must be aligned to a 32-bit boundary.
+     * Windows bitmap files require that the width of one horizontal line must
+     * be aligned to a 32-bit boundary.
      *
      * @param width The width of the image, in points.
      * @return The width of one horizontal line in the file.
      */
-    protected int CalcWidthByteCount (int width) {
+    protected int calcWidthByteCount(int width) {
         return (width * 2);
     }
 }

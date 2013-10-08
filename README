@@ -1,8 +1,27 @@
 Pure Java Port of 'LibNoise' (A portable, open-source, coherent noise-generating library for c++ - http://libnoise.sourceforge.net)
 -----
 
-The primary aim is to provide a version that's completely compatible with the original LibNoise.
+The primary aim is to provide a version that's 99% code compatible with the original LibNoise.
 
-Early stages at the moment, but I hope to have a fully functional direct-port of the c++ library available soon.
+Features:
 
-At the moment I have a functional build up of the core features.
+- Original API (modified slightly for java of course)
+- jUnit tests for each tutorial on the LibNoise site, to compare the outputs pixel-by-pixel
+- Same license as LibNoise (LGPL)
+
+State:
+
+Almost complete, few defects remain.
+
+This is a fully functional direct-port of the current c++ library, allowing you to use it almost exactly as directed in the tutorials on the original site. The main changes are variable and method naming has been switched to java conventions.
+
+Unlike the newer port project of LibNoise on GitHub this one is a 1:1 port with no modifications to functionality and API etc. it also preserves the licensing correctly rather than saying copyright in the code when it should be copyleft to the original author of LibNoise!
+
+At the moment I have a functional build up of all features I think, however there are 3 issues -
+
+- Tutorial 4a is failing the jUnit test (image comparison)
+- Tutorial 4c is failing the jUnit test (image comparison)
+- Tutorial 8 is failing the jUnit test
+
+These will be fixed soon and we should have everything fully working.
+

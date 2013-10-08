@@ -21,7 +21,6 @@
  * The developer's email is jlbezigvins@gmzigail.com (for great email, take
  * off every 'zig'.)
  */
-
 package jLibNoise.noise.model;
 
 import jLibNoise.noise.module.Module;
@@ -47,30 +46,30 @@ public class Line {
 
     // A flag that specifies whether the value is to be attenuated
     // (moved toward 0.0) as the ends of the line segment are approached.
-    private boolean m_attenuate;
+    private boolean attenuate;
     // A pointer to the noise module used to generate the output values.
-    private Module m_pModule;
+    private Module module;
     // @a x coordinate of the start of the line segment.
-    private double m_x0;
+    private double x0;
     // @a x coordinate of the end of the line segment.
-    private double m_x1;
+    private double x1;
     // @a y coordinate of the start of the line segment.
-    private double m_y0;
+    private double y0;
     // @a y coordinate of the end of the line segment.
-    private double m_y1;
+    private double y1;
     // @a z coordinate of the start of the line segment.
-    private double m_z0;
+    private double z0;
     // @a z coordinate of the end of the line segment.
-    private double m_z1;
+    private double z1;
 
     public Line() {
-        m_attenuate = true;
-        m_x0 = 0.0;
-        m_x1 = 1.0;
-        m_y0 = 0.0;
-        m_y1 = 1.0;
-        m_z0 = 0.0;
-        m_z1 = 1.0;
+        attenuate = true;
+        x0 = 0.0;
+        x1 = 1.0;
+        y0 = 0.0;
+        y1 = 1.0;
+        z0 = 0.0;
+        z1 = 1.0;
     }
 
     /**
@@ -79,14 +78,14 @@ public class Line {
      * @param module The noise module that is used to generate the output values.
      */
     public Line(Module module) {
-        m_pModule = module;
-        m_attenuate = true;
-        m_x0 = 0.0;
-        m_x1 = 1.0;
-        m_y0 = 0.0;
-        m_y1 = 1.0;
-        m_z0 = 0.0;
-        m_z1 = 1.0;
+        this.module = module;
+        attenuate = true;
+        x0 = 0.0;
+        x1 = 1.0;
+        y0 = 0.0;
+        y1 = 1.0;
+        z0 = 0.0;
+        z1 = 1.0;
     }
 
     /**
@@ -96,8 +95,8 @@ public class Line {
      *
      * @return true if the value is to be attenuated
      */
-    public boolean GetAttenuate() {
-        return m_attenuate;
+    public boolean getAttenuate() {
+        return attenuate;
     }
 
     /**
@@ -106,8 +105,8 @@ public class Line {
      * @return A reference to the noise module.
      * @pre A noise module was passed to the SetModule() method.
      */
-    public Module GetModule() {
-        return m_pModule;
+    public Module getModule() {
+        return module;
     }
 
 
@@ -130,15 +129,15 @@ public class Line {
      * @pre A noise module was passed to the SetModule() method.
      * @pre The start and end points of the line segment were specified.
      */
-    public double GetValue(double p) {
-        assert (m_pModule != null);
+    public double getValue(double p) {
+        assert (module != null);
 
-        double x = (m_x1 - m_x0) * p + m_x0;
-        double y = (m_y1 - m_y0) * p + m_y0;
-        double z = (m_z1 - m_z0) * p + m_z0;
-        double value = m_pModule.GetValue(x, y, z);
+        double x = (x1 - x0) * p + x0;
+        double y = (y1 - y0) * p + y0;
+        double z = (z1 - z0) * p + z0;
+        double value = module.getValue(x, y, z);
 
-        if (m_attenuate) {
+        if (attenuate) {
             return p * (1.0 - p) * 4 * value;
         } else {
             return value;
@@ -149,10 +148,10 @@ public class Line {
      * Sets a flag indicating that the output value is to be attenuated
      * (moved toward 0.0) as the ends of the line segment are approached.
      *
-     * @param att A flag that specifies whether the output value is to be attenuated.
+     * @param attenuate A flag that specifies whether the output value is to be attenuated.
      */
-    public void SetAttenuate(boolean att) {
-        m_attenuate = att;
+    public void setAttenuate(boolean attenuate) {
+        this.attenuate = attenuate;
     }
 
     /**
@@ -162,10 +161,10 @@ public class Line {
      * @param y y coordinate of the end position.
      * @param z z coordinate of the end position.
      */
-    public void SetEndPoint(double x, double y, double z) {
-        m_x1 = x;
-        m_y1 = y;
-        m_z1 = z;
+    public void setEndPoint(double x, double y, double z) {
+        x1 = x;
+        y1 = y;
+        z1 = z;
     }
 
     /**
@@ -176,8 +175,8 @@ public class Line {
      *
      * @param module The noise module that is used to generate the output values.
      */
-    public void SetModule(Module module) {
-        m_pModule = module;
+    public void setModule(Module module) {
+        this.module = module;
     }
 
     /**
@@ -187,9 +186,9 @@ public class Line {
      * @param y y coordinate of the start position.
      * @param z z coordinate of the start position.
      */
-    public void SetStartPoint(double x, double y, double z) {
-        m_x0 = x;
-        m_y0 = y;
-        m_z0 = z;
+    public void setStartPoint(double x, double y, double z) {
+        x0 = x;
+        y0 = y;
+        z0 = z;
     }
 }

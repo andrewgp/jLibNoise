@@ -20,13 +20,13 @@ public class Tutorials {
     public void tutorial2() {
         Perlin myModule = new Perlin();
 
-        double value = myModule.GetValue(1.25, 0.75, 0.50);
+        double value = myModule.getValue(1.25, 0.75, 0.50);
         Assert.assertEquals(0.686347, value, 0.0000009);
 
-        value = myModule.GetValue(1.2501, 0.7501, 0.5001);
+        value = myModule.getValue(1.2501, 0.7501, 0.5001);
         Assert.assertEquals(0.685644, value, 0.0000009);
 
-        value = myModule.GetValue(14.50, 20.25, 75.75);
+        value = myModule.getValue(14.50, 20.25, 75.75);
         Assert.assertEquals(-0.972999, value, 0.0000009);
     }
 
@@ -36,22 +36,22 @@ public class Tutorials {
         NoiseMap heightMap = new NoiseMap();
 
         NoiseMapBuilderPlane heightMapBuilder = new NoiseMapBuilderPlane();
-        heightMapBuilder.SetSourceModule(myModule);
-        heightMapBuilder.SetDestNoiseMap(heightMap);
-        heightMapBuilder.SetDestSize(256, 256);
-        heightMapBuilder.SetBounds(2.0, 6.0, 1.0, 5.0);
-        heightMapBuilder.Build();
+        heightMapBuilder.setSourceModule(myModule);
+        heightMapBuilder.setDestNoiseMap(heightMap);
+        heightMapBuilder.setDestSize(256, 256);
+        heightMapBuilder.setBounds(2.0, 6.0, 1.0, 5.0);
+        heightMapBuilder.build();
 
         RendererImage renderer = new RendererImage();
         Image image = new Image();
-        renderer.SetSourceNoiseMap(heightMap);
-        renderer.SetDestImage(image);
-        renderer.Render();
+        renderer.setSourceNoiseMap(heightMap);
+        renderer.setDestImage(image);
+        renderer.render();
 
         WriterBMP writer = new WriterBMP();
-        writer.SetSourceImage(image);
-        writer.SetDestFilename("tutorial_3a.png");
-        writer.WriteDestFile();
+        writer.setSourceImage(image);
+        writer.setDestFilename("tutorial_3a.png");
+        writer.writeDestFile();
 
         // test output against reference
         CompareImages(new File("tutorial_3a.png"), "/META-INF/tutorials/tutorial_3a.png");
@@ -66,31 +66,31 @@ public class Tutorials {
         NoiseMap heightMap = new NoiseMap();
 
         NoiseMapBuilderPlane heightMapBuilder = new NoiseMapBuilderPlane();
-        heightMapBuilder.SetSourceModule(myModule);
-        heightMapBuilder.SetDestNoiseMap(heightMap);
-        heightMapBuilder.SetDestSize(256, 256);
-        heightMapBuilder.SetBounds(2.0, 6.0, 1.0, 5.0);
-        heightMapBuilder.Build();
+        heightMapBuilder.setSourceModule(myModule);
+        heightMapBuilder.setDestNoiseMap(heightMap);
+        heightMapBuilder.setDestSize(256, 256);
+        heightMapBuilder.setBounds(2.0, 6.0, 1.0, 5.0);
+        heightMapBuilder.build();
 
         RendererImage renderer = new RendererImage();
         Image image = new Image();
-        renderer.SetSourceNoiseMap(heightMap);
-        renderer.SetDestImage(image);
-        renderer.ClearGradient();
-        renderer.AddGradientPoint(-1.0000, new Color(0, 0, 128, 255)); // deeps
-        renderer.AddGradientPoint(-0.2500, new Color(0, 0, 255, 255)); // shallow
-        renderer.AddGradientPoint(0.0000, new Color(0, 128, 255, 255)); // shore
-        renderer.AddGradientPoint(0.0625, new Color(240, 240, 64, 255)); // sand
-        renderer.AddGradientPoint(0.1250, new Color(32, 160, 0, 255)); // grass
-        renderer.AddGradientPoint(0.3750, new Color(224, 224, 0, 255)); // dirt
-        renderer.AddGradientPoint(0.7500, new Color(128, 128, 128, 255)); // rock
-        renderer.AddGradientPoint(1.0000, new Color(255, 255, 255, 255)); // snow
-        renderer.Render();
+        renderer.setSourceNoiseMap(heightMap);
+        renderer.setDestImage(image);
+        renderer.clearGradient();
+        renderer.addGradientPoint(-1.0000, new Color(0, 0, 128, 255)); // deeps
+        renderer.addGradientPoint(-0.2500, new Color(0, 0, 255, 255)); // shallow
+        renderer.addGradientPoint(0.0000, new Color(0, 128, 255, 255)); // shore
+        renderer.addGradientPoint(0.0625, new Color(240, 240, 64, 255)); // sand
+        renderer.addGradientPoint(0.1250, new Color(32, 160, 0, 255)); // grass
+        renderer.addGradientPoint(0.3750, new Color(224, 224, 0, 255)); // dirt
+        renderer.addGradientPoint(0.7500, new Color(128, 128, 128, 255)); // rock
+        renderer.addGradientPoint(1.0000, new Color(255, 255, 255, 255)); // snow
+        renderer.render();
 
         WriterBMP writer = new WriterBMP();
-        writer.SetSourceImage(image);
-        writer.SetDestFilename("tutorial_3b.png");
-        writer.WriteDestFile();
+        writer.setSourceImage(image);
+        writer.setDestFilename("tutorial_3b.png");
+        writer.writeDestFile();
 
         // test output against reference
         CompareImages(new File("tutorial_3b.png"), "/META-INF/tutorials/tutorial_3b.png");
@@ -105,34 +105,34 @@ public class Tutorials {
         NoiseMap heightMap = new NoiseMap();
 
         NoiseMapBuilderPlane heightMapBuilder = new NoiseMapBuilderPlane();
-        heightMapBuilder.SetSourceModule(myModule);
-        heightMapBuilder.SetDestNoiseMap(heightMap);
-        heightMapBuilder.SetDestSize(256, 256);
-        heightMapBuilder.SetBounds(2.0, 6.0, 1.0, 5.0);
-        heightMapBuilder.Build();
+        heightMapBuilder.setSourceModule(myModule);
+        heightMapBuilder.setDestNoiseMap(heightMap);
+        heightMapBuilder.setDestSize(256, 256);
+        heightMapBuilder.setBounds(2.0, 6.0, 1.0, 5.0);
+        heightMapBuilder.build();
 
         RendererImage renderer = new RendererImage();
         Image image = new Image();
-        renderer.SetSourceNoiseMap(heightMap);
-        renderer.SetDestImage(image);
-        renderer.ClearGradient();
-        renderer.AddGradientPoint(-1.0000, new Color(0, 0, 128, 255)); // deeps
-        renderer.AddGradientPoint(-0.2500, new Color(0, 0, 255, 255)); // shallow
-        renderer.AddGradientPoint(0.0000, new Color(0, 128, 255, 255)); // shore
-        renderer.AddGradientPoint(0.0625, new Color(240, 240, 64, 255)); // sand
-        renderer.AddGradientPoint(0.1250, new Color(32, 160, 0, 255)); // grass
-        renderer.AddGradientPoint(0.3750, new Color(224, 224, 0, 255)); // dirt
-        renderer.AddGradientPoint(0.7500, new Color(128, 128, 128, 255)); // rock
-        renderer.AddGradientPoint(1.0000, new Color(255, 255, 255, 255)); // snow
-        renderer.EnableLight();
-        renderer.SetLightContrast(3.0); // Triple the contrast
-        renderer.SetLightBrightness(2.0); // Double the brightness
-        renderer.Render();
+        renderer.setSourceNoiseMap(heightMap);
+        renderer.setDestImage(image);
+        renderer.clearGradient();
+        renderer.addGradientPoint(-1.0000, new Color(0, 0, 128, 255)); // deeps
+        renderer.addGradientPoint(-0.2500, new Color(0, 0, 255, 255)); // shallow
+        renderer.addGradientPoint(0.0000, new Color(0, 128, 255, 255)); // shore
+        renderer.addGradientPoint(0.0625, new Color(240, 240, 64, 255)); // sand
+        renderer.addGradientPoint(0.1250, new Color(32, 160, 0, 255)); // grass
+        renderer.addGradientPoint(0.3750, new Color(224, 224, 0, 255)); // dirt
+        renderer.addGradientPoint(0.7500, new Color(128, 128, 128, 255)); // rock
+        renderer.addGradientPoint(1.0000, new Color(255, 255, 255, 255)); // snow
+        renderer.enableLight();
+        renderer.setLightContrast(3.0); // Triple the contrast
+        renderer.setLightBrightness(2.0); // Double the brightness
+        renderer.render();
 
         WriterBMP writer = new WriterBMP();
-        writer.SetSourceImage(image);
-        writer.SetDestFilename("tutorial_3c.png");
-        writer.WriteDestFile();
+        writer.setSourceImage(image);
+        writer.setDestFilename("tutorial_3c.png");
+        writer.writeDestFile();
 
         // test output against reference
         CompareImages(new File("tutorial_3c.png"), "/META-INF/tutorials/tutorial_3c.png");
@@ -147,34 +147,34 @@ public class Tutorials {
         NoiseMap heightMap = new NoiseMap();
 
         NoiseMapBuilderPlane heightMapBuilder = new NoiseMapBuilderPlane();
-        heightMapBuilder.SetSourceModule(myModule);
-        heightMapBuilder.SetDestNoiseMap(heightMap);
-        heightMapBuilder.SetDestSize(256, 256);
-        heightMapBuilder.SetBounds(6.0, 10.0, 1.0, 5.0);
-        heightMapBuilder.Build();
+        heightMapBuilder.setSourceModule(myModule);
+        heightMapBuilder.setDestNoiseMap(heightMap);
+        heightMapBuilder.setDestSize(256, 256);
+        heightMapBuilder.setBounds(6.0, 10.0, 1.0, 5.0);
+        heightMapBuilder.build();
 
         RendererImage renderer = new RendererImage();
         Image image = new Image();
-        renderer.SetSourceNoiseMap(heightMap);
-        renderer.SetDestImage(image);
-        renderer.ClearGradient();
-        renderer.AddGradientPoint(-1.0000, new Color(0, 0, 128, 255)); // deeps
-        renderer.AddGradientPoint(-0.2500, new Color(0, 0, 255, 255)); // shallow
-        renderer.AddGradientPoint(0.0000, new Color(0, 128, 255, 255)); // shore
-        renderer.AddGradientPoint(0.0625, new Color(240, 240, 64, 255)); // sand
-        renderer.AddGradientPoint(0.1250, new Color(32, 160, 0, 255)); // grass
-        renderer.AddGradientPoint(0.3750, new Color(224, 224, 0, 255)); // dirt
-        renderer.AddGradientPoint(0.7500, new Color(128, 128, 128, 255)); // rock
-        renderer.AddGradientPoint(1.0000, new Color(255, 255, 255, 255)); // snow
-        renderer.EnableLight();
-        renderer.SetLightContrast(3.0); // Triple the contrast
-        renderer.SetLightBrightness(2.0); // Double the brightness
-        renderer.Render();
+        renderer.setSourceNoiseMap(heightMap);
+        renderer.setDestImage(image);
+        renderer.clearGradient();
+        renderer.addGradientPoint(-1.0000, new Color(0, 0, 128, 255)); // deeps
+        renderer.addGradientPoint(-0.2500, new Color(0, 0, 255, 255)); // shallow
+        renderer.addGradientPoint(0.0000, new Color(0, 128, 255, 255)); // shore
+        renderer.addGradientPoint(0.0625, new Color(240, 240, 64, 255)); // sand
+        renderer.addGradientPoint(0.1250, new Color(32, 160, 0, 255)); // grass
+        renderer.addGradientPoint(0.3750, new Color(224, 224, 0, 255)); // dirt
+        renderer.addGradientPoint(0.7500, new Color(128, 128, 128, 255)); // rock
+        renderer.addGradientPoint(1.0000, new Color(255, 255, 255, 255)); // snow
+        renderer.enableLight();
+        renderer.setLightContrast(3.0); // Triple the contrast
+        renderer.setLightBrightness(2.0); // Double the brightness
+        renderer.render();
 
         WriterBMP writer = new WriterBMP();
-        writer.SetSourceImage(image);
-        writer.SetDestFilename("tutorial_3d.png");
-        writer.WriteDestFile();
+        writer.setSourceImage(image);
+        writer.setDestFilename("tutorial_3d.png");
+        writer.writeDestFile();
 
         // test output against reference
         CompareImages(new File("tutorial_3d.png"), "/META-INF/tutorials/tutorial_3d.png");
@@ -188,50 +188,50 @@ public class Tutorials {
     @Test
     public void tutorial4a() throws Exception {
         Perlin myModule = new Perlin();
-        myModule.SetOctaveCount(1);
+        myModule.setOctaveCount(1);
         NoiseMap heightMap = new NoiseMap();
 
         NoiseMapBuilderPlane heightMapBuilder = new NoiseMapBuilderPlane();
-        heightMapBuilder.SetSourceModule(myModule);
-        heightMapBuilder.SetDestNoiseMap(heightMap);
-        heightMapBuilder.SetDestSize(256, 256);
-        heightMapBuilder.SetBounds(6.0, 10.0, 1.0, 5.0);
-        heightMapBuilder.Build();
+        heightMapBuilder.setSourceModule(myModule);
+        heightMapBuilder.setDestNoiseMap(heightMap);
+        heightMapBuilder.setDestSize(256, 256);
+        heightMapBuilder.setBounds(6.0, 10.0, 1.0, 5.0);
+        heightMapBuilder.build();
 
         RendererImage renderer = new RendererImage();
         Image image = new Image();
-        renderer.SetSourceNoiseMap(heightMap);
-        renderer.SetDestImage(image);
-        renderer.ClearGradient();
-        renderer.AddGradientPoint(-1.0000, new Color(0, 0, 128, 255)); // deeps
-        renderer.AddGradientPoint(-0.2500, new Color(0, 0, 255, 255)); // shallow
-        renderer.AddGradientPoint(0.0000, new Color(0, 128, 255, 255)); // shore
-        renderer.AddGradientPoint(0.0625, new Color(240, 240, 64, 255)); // sand
-        renderer.AddGradientPoint(0.1250, new Color(32, 160, 0, 255)); // grass
-        renderer.AddGradientPoint(0.3750, new Color(224, 224, 0, 255)); // dirt
-        renderer.AddGradientPoint(0.7500, new Color(128, 128, 128, 255)); // rock
-        renderer.AddGradientPoint(1.0000, new Color(255, 255, 255, 255)); // snow
-        renderer.EnableLight();
-        renderer.SetLightContrast(3.0); // Triple the contrast
-        renderer.SetLightBrightness(2.0); // Double the brightness
-        renderer.Render();
+        renderer.setSourceNoiseMap(heightMap);
+        renderer.setDestImage(image);
+        renderer.clearGradient();
+        renderer.addGradientPoint(-1.0000, new Color(0, 0, 128, 255)); // deeps
+        renderer.addGradientPoint(-0.2500, new Color(0, 0, 255, 255)); // shallow
+        renderer.addGradientPoint(0.0000, new Color(0, 128, 255, 255)); // shore
+        renderer.addGradientPoint(0.0625, new Color(240, 240, 64, 255)); // sand
+        renderer.addGradientPoint(0.1250, new Color(32, 160, 0, 255)); // grass
+        renderer.addGradientPoint(0.3750, new Color(224, 224, 0, 255)); // dirt
+        renderer.addGradientPoint(0.7500, new Color(128, 128, 128, 255)); // rock
+        renderer.addGradientPoint(1.0000, new Color(255, 255, 255, 255)); // snow
+        renderer.enableLight();
+        renderer.setLightContrast(3.0); // Triple the contrast
+        renderer.setLightBrightness(2.0); // Double the brightness
+        renderer.render();
 
         WriterBMP writer = new WriterBMP();
-        writer.SetSourceImage(image);
-        writer.SetDestFilename("tutorial_4a_1.png");
-        writer.WriteDestFile();
+        writer.setSourceImage(image);
+        writer.setDestFilename("tutorial_4a_1.png");
+        writer.writeDestFile();
 
         // test output against reference
         CompareImages(new File("tutorial_4a_1.png"), "/META-INF/tutorials/tutorial_4a_1.png");
 
         // now octave=6
-        myModule.SetOctaveCount(6);
+        myModule.setOctaveCount(6);
         heightMap = new NoiseMap();
-        heightMapBuilder.Build();
+        heightMapBuilder.build();
         image = new Image();
-        renderer.Render();
-        writer.SetDestFilename("tutorial_4a_6.png");
-        writer.WriteDestFile();
+        renderer.render();
+        writer.setDestFilename("tutorial_4a_6.png");
+        writer.writeDestFile();
 
         // test output against reference
         CompareImages(new File("tutorial_4a_6.png"), "/META-INF/tutorials/tutorial_4a_6.png");
@@ -243,51 +243,51 @@ public class Tutorials {
     @Test
     public void tutorial4b() throws Exception {
         Perlin myModule = new Perlin();
-        myModule.SetOctaveCount(6);
-        myModule.SetFrequency(1);
+        myModule.setOctaveCount(6);
+        myModule.setFrequency(1);
         NoiseMap heightMap = new NoiseMap();
 
         NoiseMapBuilderPlane heightMapBuilder = new NoiseMapBuilderPlane();
-        heightMapBuilder.SetSourceModule(myModule);
-        heightMapBuilder.SetDestNoiseMap(heightMap);
-        heightMapBuilder.SetDestSize(256, 256);
-        heightMapBuilder.SetBounds(6.0, 10.0, 1.0, 5.0);
-        heightMapBuilder.Build();
+        heightMapBuilder.setSourceModule(myModule);
+        heightMapBuilder.setDestNoiseMap(heightMap);
+        heightMapBuilder.setDestSize(256, 256);
+        heightMapBuilder.setBounds(6.0, 10.0, 1.0, 5.0);
+        heightMapBuilder.build();
 
         RendererImage renderer = new RendererImage();
         Image image = new Image();
-        renderer.SetSourceNoiseMap(heightMap);
-        renderer.SetDestImage(image);
-        renderer.ClearGradient();
-        renderer.AddGradientPoint(-1.0000, new Color(0, 0, 128, 255)); // deeps
-        renderer.AddGradientPoint(-0.2500, new Color(0, 0, 255, 255)); // shallow
-        renderer.AddGradientPoint(0.0000, new Color(0, 128, 255, 255)); // shore
-        renderer.AddGradientPoint(0.0625, new Color(240, 240, 64, 255)); // sand
-        renderer.AddGradientPoint(0.1250, new Color(32, 160, 0, 255)); // grass
-        renderer.AddGradientPoint(0.3750, new Color(224, 224, 0, 255)); // dirt
-        renderer.AddGradientPoint(0.7500, new Color(128, 128, 128, 255)); // rock
-        renderer.AddGradientPoint(1.0000, new Color(255, 255, 255, 255)); // snow
-        renderer.EnableLight();
-        renderer.SetLightContrast(3.0); // Triple the contrast
-        renderer.SetLightBrightness(2.0); // Double the brightness
-        renderer.Render();
+        renderer.setSourceNoiseMap(heightMap);
+        renderer.setDestImage(image);
+        renderer.clearGradient();
+        renderer.addGradientPoint(-1.0000, new Color(0, 0, 128, 255)); // deeps
+        renderer.addGradientPoint(-0.2500, new Color(0, 0, 255, 255)); // shallow
+        renderer.addGradientPoint(0.0000, new Color(0, 128, 255, 255)); // shore
+        renderer.addGradientPoint(0.0625, new Color(240, 240, 64, 255)); // sand
+        renderer.addGradientPoint(0.1250, new Color(32, 160, 0, 255)); // grass
+        renderer.addGradientPoint(0.3750, new Color(224, 224, 0, 255)); // dirt
+        renderer.addGradientPoint(0.7500, new Color(128, 128, 128, 255)); // rock
+        renderer.addGradientPoint(1.0000, new Color(255, 255, 255, 255)); // snow
+        renderer.enableLight();
+        renderer.setLightContrast(3.0); // Triple the contrast
+        renderer.setLightBrightness(2.0); // Double the brightness
+        renderer.render();
 
         WriterBMP writer = new WriterBMP();
-        writer.SetSourceImage(image);
-        writer.SetDestFilename("tutorial_4b_1.png");
-        writer.WriteDestFile();
+        writer.setSourceImage(image);
+        writer.setDestFilename("tutorial_4b_1.png");
+        writer.writeDestFile();
 
         // test output against reference
         CompareImages(new File("tutorial_4b_1.png"), "/META-INF/tutorials/tutorial_4b_1.png");
 
         // now freq=6
-        myModule.SetFrequency(6);
+        myModule.setFrequency(6);
         heightMap = new NoiseMap();
-        heightMapBuilder.Build();
+        heightMapBuilder.build();
         image = new Image();
-        renderer.Render();
-        writer.SetDestFilename("tutorial_4b_6.png");
-        writer.WriteDestFile();
+        renderer.render();
+        writer.setDestFilename("tutorial_4b_6.png");
+        writer.writeDestFile();
 
         // test output against reference
         CompareImages(new File("tutorial_4b_6.png"), "/META-INF/tutorials/tutorial_4b_6.png");
@@ -301,52 +301,52 @@ public class Tutorials {
     @Test
     public void tutorial4c() throws Exception {
         Perlin myModule = new Perlin();
-        myModule.SetOctaveCount(6);
-        myModule.SetFrequency(1);
-        myModule.SetPersistence(0.25);
+        myModule.setOctaveCount(6);
+        myModule.setFrequency(1);
+        myModule.setPersistence(0.25);
         NoiseMap heightMap = new NoiseMap();
 
         NoiseMapBuilderPlane heightMapBuilder = new NoiseMapBuilderPlane();
-        heightMapBuilder.SetSourceModule(myModule);
-        heightMapBuilder.SetDestNoiseMap(heightMap);
-        heightMapBuilder.SetDestSize(256, 256);
-        heightMapBuilder.SetBounds(6.0, 10.0, 1.0, 5.0);
-        heightMapBuilder.Build();
+        heightMapBuilder.setSourceModule(myModule);
+        heightMapBuilder.setDestNoiseMap(heightMap);
+        heightMapBuilder.setDestSize(256, 256);
+        heightMapBuilder.setBounds(6.0, 10.0, 1.0, 5.0);
+        heightMapBuilder.build();
 
         RendererImage renderer = new RendererImage();
         Image image = new Image();
-        renderer.SetSourceNoiseMap(heightMap);
-        renderer.SetDestImage(image);
-        renderer.ClearGradient();
-        renderer.AddGradientPoint(-1.0000, new Color(0, 0, 128, 255)); // deeps
-        renderer.AddGradientPoint(-0.2500, new Color(0, 0, 255, 255)); // shallow
-        renderer.AddGradientPoint(0.0000, new Color(0, 128, 255, 255)); // shore
-        renderer.AddGradientPoint(0.0625, new Color(240, 240, 64, 255)); // sand
-        renderer.AddGradientPoint(0.1250, new Color(32, 160, 0, 255)); // grass
-        renderer.AddGradientPoint(0.3750, new Color(224, 224, 0, 255)); // dirt
-        renderer.AddGradientPoint(0.7500, new Color(128, 128, 128, 255)); // rock
-        renderer.AddGradientPoint(1.0000, new Color(255, 255, 255, 255)); // snow
-        renderer.EnableLight();
-        renderer.SetLightContrast(3.0); // Triple the contrast
-        renderer.SetLightBrightness(2.0); // Double the brightness
-        renderer.Render();
+        renderer.setSourceNoiseMap(heightMap);
+        renderer.setDestImage(image);
+        renderer.clearGradient();
+        renderer.addGradientPoint(-1.0000, new Color(0, 0, 128, 255)); // deeps
+        renderer.addGradientPoint(-0.2500, new Color(0, 0, 255, 255)); // shallow
+        renderer.addGradientPoint(0.0000, new Color(0, 128, 255, 255)); // shore
+        renderer.addGradientPoint(0.0625, new Color(240, 240, 64, 255)); // sand
+        renderer.addGradientPoint(0.1250, new Color(32, 160, 0, 255)); // grass
+        renderer.addGradientPoint(0.3750, new Color(224, 224, 0, 255)); // dirt
+        renderer.addGradientPoint(0.7500, new Color(128, 128, 128, 255)); // rock
+        renderer.addGradientPoint(1.0000, new Color(255, 255, 255, 255)); // snow
+        renderer.enableLight();
+        renderer.setLightContrast(3.0); // Triple the contrast
+        renderer.setLightBrightness(2.0); // Double the brightness
+        renderer.render();
 
         WriterBMP writer = new WriterBMP();
-        writer.SetSourceImage(image);
-        writer.SetDestFilename("tutorial_4c_25.png");
-        writer.WriteDestFile();
+        writer.setSourceImage(image);
+        writer.setDestFilename("tutorial_4c_25.png");
+        writer.writeDestFile();
 
         // test output against reference
         CompareImages(new File("tutorial_4c_25.png"), "/META-INF/tutorials/tutorial_4c_25.png");
 
         // now per=0.75
-        myModule.SetPersistence(0.75);
+        myModule.setPersistence(0.75);
         heightMap = new NoiseMap();
-        heightMapBuilder.Build();
+        heightMapBuilder.build();
         image = new Image();
-        renderer.Render();
-        writer.SetDestFilename("tutorial_4c_75.png");
-        writer.WriteDestFile();
+        renderer.render();
+        writer.setDestFilename("tutorial_4c_75.png");
+        writer.writeDestFile();
 
         // test output against reference
         CompareImages(new File("tutorial_4c_75.png"), "/META-INF/tutorials/tutorial_4c_75.png");
@@ -358,34 +358,34 @@ public class Tutorials {
 
         NoiseMap heightMap = new NoiseMap();
         NoiseMapBuilderSphere heightMapBuilder = new NoiseMapBuilderSphere();
-        heightMapBuilder.SetSourceModule(myModule);
-        heightMapBuilder.SetDestNoiseMap(heightMap);
-        heightMapBuilder.SetDestSize(512, 256);
-        heightMapBuilder.SetBounds(-90.0, 90.0, -180.0, 180.0);
-        heightMapBuilder.Build();
+        heightMapBuilder.setSourceModule(myModule);
+        heightMapBuilder.setDestNoiseMap(heightMap);
+        heightMapBuilder.setDestSize(512, 256);
+        heightMapBuilder.setBounds(-90.0, 90.0, -180.0, 180.0);
+        heightMapBuilder.build();
 
         RendererImage renderer = new RendererImage();
         Image image = new Image();
-        renderer.SetSourceNoiseMap(heightMap);
-        renderer.SetDestImage(image);
-        renderer.ClearGradient();
-        renderer.AddGradientPoint(-1.0000, new Color(0, 0, 128, 255)); // deeps
-        renderer.AddGradientPoint(-0.2500, new Color(0, 0, 255, 255)); // shallow
-        renderer.AddGradientPoint(0.0000, new Color(0, 128, 255, 255)); // shore
-        renderer.AddGradientPoint(0.0625, new Color(240, 240, 64, 255)); // sand
-        renderer.AddGradientPoint(0.1250, new Color(32, 160, 0, 255)); // grass
-        renderer.AddGradientPoint(0.3750, new Color(224, 224, 0, 255)); // dirt
-        renderer.AddGradientPoint(0.7500, new Color(128, 128, 128, 255)); // rock
-        renderer.AddGradientPoint(1.0000, new Color(255, 255, 255, 255)); // snow
-        renderer.EnableLight();
-        renderer.SetLightContrast(3.0);
-        renderer.SetLightBrightness(2.0);
-        renderer.Render();
+        renderer.setSourceNoiseMap(heightMap);
+        renderer.setDestImage(image);
+        renderer.clearGradient();
+        renderer.addGradientPoint(-1.0000, new Color(0, 0, 128, 255)); // deeps
+        renderer.addGradientPoint(-0.2500, new Color(0, 0, 255, 255)); // shallow
+        renderer.addGradientPoint(0.0000, new Color(0, 128, 255, 255)); // shore
+        renderer.addGradientPoint(0.0625, new Color(240, 240, 64, 255)); // sand
+        renderer.addGradientPoint(0.1250, new Color(32, 160, 0, 255)); // grass
+        renderer.addGradientPoint(0.3750, new Color(224, 224, 0, 255)); // dirt
+        renderer.addGradientPoint(0.7500, new Color(128, 128, 128, 255)); // rock
+        renderer.addGradientPoint(1.0000, new Color(255, 255, 255, 255)); // snow
+        renderer.enableLight();
+        renderer.setLightContrast(3.0);
+        renderer.setLightBrightness(2.0);
+        renderer.render();
 
         WriterBMP writer = new WriterBMP();
-        writer.SetSourceImage(image);
-        writer.SetDestFilename("tutorial_8.png");
-        writer.WriteDestFile();
+        writer.setSourceImage(image);
+        writer.setDestFilename("tutorial_8.png");
+        writer.writeDestFile();
 
         // test output against reference
         CompareImages(new File("tutorial_8.png"), "/META-INF/tutorials/tutorial_8.png");

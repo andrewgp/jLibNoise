@@ -44,7 +44,7 @@ public abstract class Interp {
      * @param a  The alpha value.
      * @return The interpolated value.
      */
-    public static double CubicInterp(double n0, double n1, double n2, double n3, double a) {
+    public static double cubicInterp(double n0, double n1, double n2, double n3, double a) {
         double p = (n3 - n2) - (n0 - n1);
         double q = (n0 - n1) - p;
         double r = n2 - n0;
@@ -64,7 +64,7 @@ public abstract class Interp {
      * @param a  The alpha value.
      * @return The interpolated value.
      */
-    public static double LinearInterp(double n0, double n1, double a) {
+    public static double linearInterp(double n0, double n1, double a) {
         return ((1.0 - a) * n0) + (a * n1);
     }
 
@@ -76,7 +76,7 @@ public abstract class Interp {
      * @param a The value to map onto a cubic S-curve. (should range from 0.0 to 1.0)
      * @return The mapped value.
      */
-    public static double SCurve3(double a) {
+    public static double sCurve3(double a) {
         return (a * a * (3.0 - 2.0 * a));
     }
 
@@ -90,11 +90,10 @@ public abstract class Interp {
      * @param a The value to map onto a quintic S-curve. (should range from 0.0 to 1.0)
      * @return The mapped value.
      */
-    public static double SCurve5(double a) {
+    public static double sCurve5(double a) {
         double a3 = a * a * a;
         double a4 = a3 * a;
         double a5 = a4 * a;
         return (6.0 * a5) - (15.0 * a4) + (10.0 * a3);
     }
-
 }

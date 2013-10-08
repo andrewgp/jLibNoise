@@ -52,7 +52,7 @@ public class NoiseGen {
      * @param noiseQuality The quality of the coherent-noise.
      * @return The generated gradient-coherent-noise value.
      */
-    public static double GradientCoherentNoise3D(double x, double y, double z, int seed, NoiseQuality noiseQuality) {
+    public static double gradientCoherentNoise3D(double x, double y, double z, int seed, NoiseQuality noiseQuality) {
         // Create a unit-length cube aligned along an integer boundary.  This cube
         // surrounds the input point.
         int x0 = (x > 0.0 ? (int) x : (int) x - 1);
@@ -72,14 +72,14 @@ public class NoiseGen {
                 zs = (z - (double) z0);
                 break;
             case QUALITY_STD:
-                xs = Interp.SCurve3(x - (double) x0);
-                ys = Interp.SCurve3(y - (double) y0);
-                zs = Interp.SCurve3(z - (double) z0);
+                xs = Interp.sCurve3(x - (double) x0);
+                ys = Interp.sCurve3(y - (double) y0);
+                zs = Interp.sCurve3(z - (double) z0);
                 break;
             case QUALITY_BEST:
-                xs = Interp.SCurve5(x - (double) x0);
-                ys = Interp.SCurve5(y - (double) y0);
-                zs = Interp.SCurve5(z - (double) z0);
+                xs = Interp.sCurve5(x - (double) x0);
+                ys = Interp.sCurve5(y - (double) y0);
+                zs = Interp.sCurve5(z - (double) z0);
                 break;
         }
 
@@ -88,30 +88,30 @@ public class NoiseGen {
         // noise values using the S-curve value as the interpolant (trilinear
         // interpolation.)
         double n0, n1, ix0, ix1, iy0, iy1;
-        n0 = GradientNoise3D(x, y, z, x0, y0, z0, seed);
-        n1 = GradientNoise3D(x, y, z, x1, y0, z0, seed);
-        ix0 = Interp.LinearInterp(n0, n1, xs);
-        n0 = GradientNoise3D(x, y, z, x0, y1, z0, seed);
-        n1 = GradientNoise3D(x, y, z, x1, y1, z0, seed);
-        ix1 = Interp.LinearInterp(n0, n1, xs);
-        iy0 = Interp.LinearInterp(ix0, ix1, ys);
-        n0 = GradientNoise3D(x, y, z, x0, y0, z1, seed);
-        n1 = GradientNoise3D(x, y, z, x1, y0, z1, seed);
-        ix0 = Interp.LinearInterp(n0, n1, xs);
-        n0 = GradientNoise3D(x, y, z, x0, y1, z1, seed);
-        n1 = GradientNoise3D(x, y, z, x1, y1, z1, seed);
-        ix1 = Interp.LinearInterp(n0, n1, xs);
-        iy1 = Interp.LinearInterp(ix0, ix1, ys);
+        n0 = gradientNoise3D(x, y, z, x0, y0, z0, seed);
+        n1 = gradientNoise3D(x, y, z, x1, y0, z0, seed);
+        ix0 = Interp.linearInterp(n0, n1, xs);
+        n0 = gradientNoise3D(x, y, z, x0, y1, z0, seed);
+        n1 = gradientNoise3D(x, y, z, x1, y1, z0, seed);
+        ix1 = Interp.linearInterp(n0, n1, xs);
+        iy0 = Interp.linearInterp(ix0, ix1, ys);
+        n0 = gradientNoise3D(x, y, z, x0, y0, z1, seed);
+        n1 = gradientNoise3D(x, y, z, x1, y0, z1, seed);
+        ix0 = Interp.linearInterp(n0, n1, xs);
+        n0 = gradientNoise3D(x, y, z, x0, y1, z1, seed);
+        n1 = gradientNoise3D(x, y, z, x1, y1, z1, seed);
+        ix1 = Interp.linearInterp(n0, n1, xs);
+        iy1 = Interp.linearInterp(ix0, ix1, ys);
 
-        return Interp.LinearInterp(iy0, iy1, zs);
+        return Interp.linearInterp(iy0, iy1, zs);
     }
 
-    public static double GradientCoherentNoise3D(double x, double y, double z) {
-        return GradientCoherentNoise3D(x, y, z, 0, NoiseQuality.QUALITY_STD);
+    public static double gradientCoherentNoise3D(double x, double y, double z) {
+        return gradientCoherentNoise3D(x, y, z, 0, NoiseQuality.QUALITY_STD);
     }
 
-    public static double GradientCoherentNoise3D(double x, double y, double z, int seed) {
-        return GradientCoherentNoise3D(x, y, z, seed, NoiseQuality.QUALITY_STD);
+    public static double gradientCoherentNoise3D(double x, double y, double z, int seed) {
+        return gradientCoherentNoise3D(x, y, z, seed, NoiseQuality.QUALITY_STD);
     }
 
     /**
@@ -149,7 +149,7 @@ public class NoiseGen {
      * @pre The difference between @a fy and @a iy must be less than or equal to one.
      * @pre The difference between @a fz and @a iz must be less than or equal to one.
      */
-    public static double GradientNoise3D(double fx, double fy, double fz, int ix, int iy, int iz, int seed) {
+    public static double gradientNoise3D(double fx, double fy, double fz, int ix, int iy, int iz, int seed) {
         // Randomly generate a gradient vector given the integer coordinates of the
         // input value.  This implementation generates a random number and uses it
         // as an index into a normalized-vector lookup table.
@@ -162,9 +162,9 @@ public class NoiseGen {
         vectorIndex ^= (vectorIndex >> SHIFT_NOISE_GEN);
         vectorIndex &= 0xff;
 
-        double xvGradient = Vectortable.g_randomVectors[(vectorIndex << 2)];
-        double yvGradient = Vectortable.g_randomVectors[(vectorIndex << 2) + 1];
-        double zvGradient = Vectortable.g_randomVectors[(vectorIndex << 2) + 2];
+        double xvGradient = Vectortable.randomVectors[(vectorIndex << 2)];
+        double yvGradient = Vectortable.randomVectors[(vectorIndex << 2) + 1];
+        double zvGradient = Vectortable.randomVectors[(vectorIndex << 2) + 2];
 
         // Set up us another vector equal to the distance between the two vectors
         // passed to this function.
@@ -180,8 +180,8 @@ public class NoiseGen {
                 + (zvGradient * zvPoint)) * 2.12;
     }
 
-    public static double GradientNoise3D(double fx, double fy, double fz, int ix, int iy, int iz) {
-        return GradientNoise3D(fx, fy, fz, ix, iy, iz, 0);
+    public static double gradientNoise3D(double fx, double fy, double fz, int ix, int iy, int iz) {
+        return gradientNoise3D(fx, fy, fz, ix, iy, iz, 0);
     }
 
     /**
@@ -200,7 +200,7 @@ public class NoiseGen {
      * @param seed A random number seed.
      * @return The generated integer-noise value.
      */
-    public static int IntValueNoise3D(int x, int y, int z, int seed) {
+    public static int intValueNoise3D(int x, int y, int z, int seed) {
         // All constants are primes and must remain prime in order for this noise
         // function to work correctly.
         int n = (
@@ -213,8 +213,8 @@ public class NoiseGen {
         return (n * (n * n * 60493 + 19990303) + 1376312589) & 0x7fffffff;
     }
 
-    public static int IntValueNoise3D(int x, int y, int z) {
-        return IntValueNoise3D(x, y, z, 0);
+    public static int intValueNoise3D(int x, int y, int z) {
+        return intValueNoise3D(x, y, z, 0);
     }
 
     /**
@@ -235,7 +235,7 @@ public class NoiseGen {
      * @param n A floating-point number.
      * @return The modified floating-point number.
      */
-    public static double MakeInt32Range(double n) {
+    public static double makeInt32Range(double n) {
 //        if (n >= 1073741824.0) {
 //            return (2.0 * fmod(n, 1073741824.0)) - 1073741824.0;
 //        } else if (n <= -1073741824.0) {
@@ -261,7 +261,7 @@ public class NoiseGen {
     ///
     /// For an explanation of the difference between <i>gradient</i> noise and
     /// <i>value</i> noise, see the comments for the GradientNoise3D() function.
-    public static double ValueCoherentNoise3D(double x, double y, double z, int seed, NoiseQuality noiseQuality) {
+    public static double valueCoherentNoise3D(double x, double y, double z, int seed, NoiseQuality noiseQuality) {
         // Create a unit-length cube aligned along an integer boundary.  This cube
         // surrounds the input point.
         int x0 = (x > 0.0 ? (int) x : (int) x - 1);
@@ -281,14 +281,14 @@ public class NoiseGen {
                 zs = (z - (double) z0);
                 break;
             case QUALITY_STD:
-                xs = Interp.SCurve3(x - (double) x0);
-                ys = Interp.SCurve3(y - (double) y0);
-                zs = Interp.SCurve3(z - (double) z0);
+                xs = Interp.sCurve3(x - (double) x0);
+                ys = Interp.sCurve3(y - (double) y0);
+                zs = Interp.sCurve3(z - (double) z0);
                 break;
             case QUALITY_BEST:
-                xs = Interp.SCurve5(x - (double) x0);
-                ys = Interp.SCurve5(y - (double) y0);
-                zs = Interp.SCurve5(z - (double) z0);
+                xs = Interp.sCurve5(x - (double) x0);
+                ys = Interp.sCurve5(y - (double) y0);
+                zs = Interp.sCurve5(z - (double) z0);
                 break;
         }
 
@@ -297,29 +297,29 @@ public class NoiseGen {
         // noise values using the S-curve value as the interpolant (trilinear
         // interpolation.)
         double n0, n1, ix0, ix1, iy0, iy1;
-        n0 = ValueNoise3D(x0, y0, z0, seed);
-        n1 = ValueNoise3D(x1, y0, z0, seed);
-        ix0 = Interp.LinearInterp(n0, n1, xs);
-        n0 = ValueNoise3D(x0, y1, z0, seed);
-        n1 = ValueNoise3D(x1, y1, z0, seed);
-        ix1 = Interp.LinearInterp(n0, n1, xs);
-        iy0 = Interp.LinearInterp(ix0, ix1, ys);
-        n0 = ValueNoise3D(x0, y0, z1, seed);
-        n1 = ValueNoise3D(x1, y0, z1, seed);
-        ix0 = Interp.LinearInterp(n0, n1, xs);
-        n0 = ValueNoise3D(x0, y1, z1, seed);
-        n1 = ValueNoise3D(x1, y1, z1, seed);
-        ix1 = Interp.LinearInterp(n0, n1, xs);
-        iy1 = Interp.LinearInterp(ix0, ix1, ys);
-        return Interp.LinearInterp(iy0, iy1, zs);
+        n0 = valueNoise3D(x0, y0, z0, seed);
+        n1 = valueNoise3D(x1, y0, z0, seed);
+        ix0 = Interp.linearInterp(n0, n1, xs);
+        n0 = valueNoise3D(x0, y1, z0, seed);
+        n1 = valueNoise3D(x1, y1, z0, seed);
+        ix1 = Interp.linearInterp(n0, n1, xs);
+        iy0 = Interp.linearInterp(ix0, ix1, ys);
+        n0 = valueNoise3D(x0, y0, z1, seed);
+        n1 = valueNoise3D(x1, y0, z1, seed);
+        ix0 = Interp.linearInterp(n0, n1, xs);
+        n0 = valueNoise3D(x0, y1, z1, seed);
+        n1 = valueNoise3D(x1, y1, z1, seed);
+        ix1 = Interp.linearInterp(n0, n1, xs);
+        iy1 = Interp.linearInterp(ix0, ix1, ys);
+        return Interp.linearInterp(iy0, iy1, zs);
     }
 
-    public static double ValueCoherentNoise3D(double x, double y, double z, int seed) {
-        return ValueCoherentNoise3D(x, y, z, seed, NoiseQuality.QUALITY_STD);
+    public static double valueCoherentNoise3D(double x, double y, double z, int seed) {
+        return valueCoherentNoise3D(x, y, z, seed, NoiseQuality.QUALITY_STD);
     }
 
-    public static double ValueCoherentNoise3D(double x, double y, double z) {
-        return ValueCoherentNoise3D(x, y, z, 0, NoiseQuality.QUALITY_STD);
+    public static double valueCoherentNoise3D(double x, double y, double z) {
+        return valueCoherentNoise3D(x, y, z, 0, NoiseQuality.QUALITY_STD);
     }
 
     /**
@@ -337,11 +337,11 @@ public class NoiseGen {
      * @param seed A random number seed.
      * @return The generated value-noise value.
      */
-    public static double ValueNoise3D(int x, int y, int z, int seed) {
-        return 1.0 - ((double) IntValueNoise3D(x, y, z, seed) / 1073741824.0);
+    public static double valueNoise3D(int x, int y, int z, int seed) {
+        return 1.0 - ((double) intValueNoise3D(x, y, z, seed) / 1073741824.0);
     }
 
-    public static double ValueNoise3D(int x, int y, int z) {
-        return ValueNoise3D(x, y, z, 0);
+    public static double valueNoise3D(int x, int y, int z) {
+        return valueNoise3D(x, y, z, 0);
     }
 }

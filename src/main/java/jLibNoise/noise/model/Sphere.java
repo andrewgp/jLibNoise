@@ -21,7 +21,6 @@
  * The developer's email is jlbezigvins@gmzigail.com (for great email, take
  * off every 'zig'.)
  */
-
 package jLibNoise.noise.model;
 
 import jLibNoise.noise.LatLon;
@@ -49,7 +48,7 @@ import jLibNoise.noise.module.Module;
 public class Sphere {
 
     // A pointer to the noise module used to generate the output values.
-    private Module m_pModule;
+    private Module module;
 
     public Sphere() {
     }
@@ -60,7 +59,7 @@ public class Sphere {
      * @param module The noise module that is used to generate the output values.
      */
     public Sphere(Module module) {
-        m_pModule = module;
+        this.module = module;
     }
 
     /**
@@ -69,9 +68,21 @@ public class Sphere {
      * @return A reference to the noise module.
      * @pre A noise module was passed to the SetModule() method.
      */
-    public Module GetModule() {
-        assert (m_pModule != null);
-        return m_pModule;
+    public Module getModule() {
+        assert (module != null);
+        return module;
+    }
+    
+    /**
+     * Sets the noise module that is used to generate the output values.
+     * <p/>
+     * This noise module must exist for the lifetime of this object,
+     * until you pass a new noise module to this method.
+     *
+     * @param module The noise module that is used to generate the output values.
+     */
+    public void setModule(Module module) {
+        this.module = module;
     }
 
     /**
@@ -93,22 +104,10 @@ public class Sphere {
      * @return The output value from the noise module.
      * @pre A noise module was passed to the SetModule() method.
      */
-    public double GetValue(double lat, double lon) {
-        assert (m_pModule != null);
+    public double getValue(double lat, double lon) {
+        assert (module != null);
         
-        double[] xyz = LatLon.LatLonToXYZ(lat, lon);
-        return m_pModule.GetValue(xyz[0], xyz[1], xyz[2]);
-    }
-
-    /**
-     * Sets the noise module that is used to generate the output values.
-     * <p/>
-     * This noise module must exist for the lifetime of this object,
-     * until you pass a new noise module to this method.
-     *
-     * @param module The noise module that is used to generate the output values.
-     */
-    public void SetModule(Module module) {
-        m_pModule = module;
+        double[] xyz = LatLon.latLonToXYZ(lat, lon);
+        return module.getValue(xyz[0], xyz[1], xyz[2]);
     }
 }

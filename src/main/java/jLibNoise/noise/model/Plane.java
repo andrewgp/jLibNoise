@@ -21,7 +21,6 @@
  * The developer's email is jlbezigvins@gmzigail.com (for great email, take
  * off every 'zig'.)
  */
-
 package jLibNoise.noise.model;
 
 import jLibNoise.noise.module.Module;
@@ -47,7 +46,7 @@ import jLibNoise.noise.module.Module;
 public class Plane {
 
     // A pointer to the noise module used to generate the output values.
-    private Module m_pModule;
+    private Module module;
 
     public Plane() {
     }
@@ -58,7 +57,7 @@ public class Plane {
      * @param module The noise module that is used to generate the output values.
      */
     public Plane(Module module) {
-        m_pModule = module;
+        this.module = module;
     }
 
     /**
@@ -67,9 +66,9 @@ public class Plane {
      * @return A reference to the noise module.
      * @pre A noise module was passed to the SetModule() method.
      */
-    public Module GetModule() {
-//      assert (m_pModule != null);
-        return m_pModule;
+    public Module getModule() {
+        assert (module != null);
+        return module;
     }
 
     /**
@@ -84,9 +83,9 @@ public class Plane {
      * @return The output value from the noise module.
      * @pre A noise module was passed to the SetModule() method.
      */
-    public double GetValue(double x, double z) {
-        assert (m_pModule != null);
-        return m_pModule.GetValue(x, 0, z);
+    public double getValue(double x, double z) {
+        assert (module != null);
+        return module.getValue(x, 0, z);
     }
 
     /**
@@ -97,7 +96,7 @@ public class Plane {
      *
      * @param module The noise module that is used to generate the output values.
      */
-    public void SetModule(Module module) {
-        m_pModule = module;
+    public void setModule(Module module) {
+        this.module = module;
     }
 }

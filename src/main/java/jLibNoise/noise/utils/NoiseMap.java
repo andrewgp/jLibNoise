@@ -21,7 +21,6 @@
  * The developer's email is jlbezigvins@gmzigail.com (for great email, take
  * off every 'zig'.)
  */
-
 package jLibNoise.noise.utils;
 
 import jLibNoise.noise.ExceptionInvalidParam;
@@ -88,19 +87,19 @@ public class NoiseMap {
     public static int RASTER_STRIDE_BOUNDARY = 4;
 
     // Value used for all positions outside of the noise map.
-    private float m_borderValue;
+    private float borderValue;
     // The current height of the noise map.
-    private int m_height;
+    private int height;
     /// The amount of memory allocated for this noise map.
     /// This value is equal to the number of @a float values allocated for
     /// the noise map, not the number of bytes.
-    private long m_memUsed;
+    private long memUsed;
     /// A pointer to the noise map buffer.
-    private float[] m_pNoiseMap;
+    private float[] noiseMap;
     // The stride amount of the noise map.
-    private int m_stride;
+    private int stride;
     // The current width of the noise map.
-    private int m_width;
+    private int width;
     
     public NoiseMap() {
         InitObj();
@@ -123,7 +122,7 @@ public class NoiseMap {
      */
     public NoiseMap(int width, int height) {
         InitObj();
-        SetSize(width, height);
+        setSize(width, height);
     }
 
     /**
@@ -134,7 +133,7 @@ public class NoiseMap {
      */
     public NoiseMap(NoiseMap rhs) {
         InitObj();
-        CopyNoiseMap(rhs);
+        copyNoiseMap(rhs);
     }
 
     /// Assignment operator.
@@ -151,10 +150,10 @@ public class NoiseMap {
      *
      * @param value The value that all positions within the noise map are cleared to.
      */
-    public void Clear(float value) {
-        if (m_pNoiseMap != null) {
-            for (int i = 0; i < m_height * m_width; i++) {
-               m_pNoiseMap[i] = value;
+    public void clear(float value) {
+        if (noiseMap != null) {
+            for (int i = 0; i < height * width; i++) {
+               noiseMap[i] = value;
             }
         }
     }
@@ -167,8 +166,8 @@ public class NoiseMap {
      *
      * @return The value used for all positions outside of the noise map.
      */
-    public float GetBorderValue() {
-        return m_borderValue;
+    public float getBorderValue() {
+        return borderValue;
     }
 
     /**
@@ -177,8 +176,9 @@ public class NoiseMap {
      * @return A const pointer to a slab at the position (0, 0), or
      *         NULL if the noise map is empty.
      */
-    public float[] GetConstSlabPtr() {
-        return m_pNoiseMap;
+    @Deprecated
+    public float[] getConstSlabPtr() {
+        return noiseMap;
     }
 
     /**
@@ -190,8 +190,9 @@ public class NoiseMap {
      * @return A const pointer to a slab at the position ( 0, @a row ), or @a NULL if the noise map is empty.
      * @pre The coordinates must exist within the bounds of the noise map.
      */
-    public ArrayPointer.NativeFloatPrim GetConstSlabPtr(int row) {
-        return GetConstSlabPtr(0, row);
+    @Deprecated
+    public ArrayPointer.NativeFloatPrim getConstSlabPtr(int row) {
+        return getConstSlabPtr(0, row);
     }
 
     /**
@@ -204,9 +205,8 @@ public class NoiseMap {
      * @return A const pointer to a slab at the position ( @a x, @a y ), or @a NULL if the noise map is empty.
      * @pre The coordinates must exist within the bounds of the noise map.
      */
-    public ArrayPointer.NativeFloatPrim GetConstSlabPtr(int x, int y) {
-//        return m_pNoiseMap + (long) x + (long) m_stride * (long) y;
-        return new ArrayPointer.NativeFloatPrim(m_pNoiseMap, x + (y * m_width));
+    public ArrayPointer.NativeFloatPrim getConstSlabPtr(int x, int y) {
+        return new ArrayPointer.NativeFloatPrim(noiseMap, x + (y * width));
     }
 
     /**
@@ -214,8 +214,8 @@ public class NoiseMap {
      *
      * @return The height of the noise map.
      */
-    public int GetHeight() {
-        return m_height;
+    public int getHeight() {
+        return height;
     }
 
     /**
@@ -225,8 +225,8 @@ public class NoiseMap {
      *
      * @return The amount of memory allocated for this noise map.
      */
-    public long GetMemUsed() {
-        return m_memUsed;
+    public long getMemUsed() {
+        return memUsed;
     }
 
     /**
@@ -234,8 +234,8 @@ public class NoiseMap {
      *
      * @return A pointer to a slab at the position (0, 0), or @a NULL if the noise map is empty.
      */
-    public float[] GetSlabPtr() {
-        return m_pNoiseMap;
+    public float[] getSlabPtr() {
+        return noiseMap;
     }
 
     /**
@@ -247,8 +247,8 @@ public class NoiseMap {
      * @return A pointer to a slab at the position ( 0, @a row ), or @a NULL if the noise map is empty.
      * @pre The coordinates must exist within the bounds of the noise map.
      */
-    public ArrayPointer.NativeFloatPrim GetSlabPtr(int row) {
-        return GetSlabPtr(0, row);
+    public ArrayPointer.NativeFloatPrim getSlabPtr(int row) {
+        return getSlabPtr(0, row);
     }
 
     /**
@@ -261,9 +261,9 @@ public class NoiseMap {
      * @return A pointer to a slab at the position ( @a x, @a y ) or @a NULL if the noise map is empty.
      * @pre The coordinates must exist within the bounds of the noise map.
      */
-    public ArrayPointer.NativeFloatPrim GetSlabPtr(int x, int y) {
+    public ArrayPointer.NativeFloatPrim getSlabPtr(int x, int y) {
 //        return m_pNoiseMap + (long) x + (long) m_stride * (long) y;
-        return new ArrayPointer.NativeFloatPrim(m_pNoiseMap, x * y);
+        return new ArrayPointer.NativeFloatPrim(noiseMap, x * y);
     }
 
     /**
@@ -276,8 +276,8 @@ public class NoiseMap {
      *
      * @return The stride amount of the noise map.
      */
-    public int GetStride() {
-        return m_stride;
+    public int getStride() {
+        return stride;
     }
 
     /**
@@ -289,16 +289,16 @@ public class NoiseMap {
      * @param y The y coordinate of the position.
      * @return The value at that position.
      */
-    public float GetValue(int x, int y) {
-        if (m_pNoiseMap != null) {
-            if (x >= 0 && x < m_width && y >= 0 && y < m_height) {
+    public float getValue(int x, int y) {
+        if (noiseMap != null) {
+            if (x >= 0 && x < width && y >= 0 && y < height) {
 //                return*(GetConstSlabPtr(x, y));
                 throw new NotImplementedException();
             }
         }
         // The coordinates specified are outside the noise map.  Return the border
         // value.
-        return m_borderValue;
+        return borderValue;
     }
 
     /**
@@ -306,8 +306,8 @@ public class NoiseMap {
      *
      * @return The width of the noise map.
      */
-    public int GetWidth() {
-        return m_width;
+    public int getWidth() {
+        return width;
     }
 
     /**
@@ -319,7 +319,7 @@ public class NoiseMap {
      * method can return an out-of-memory exception because two noise
      * maps will temporarily exist in memory during this call.)
      */
-    public void ReclaimMem() {
+    public void reclaimMem() {
 //        size_t newMemUsage = CalcMinMemUsage(m_width, m_height);
 //        if (m_memUsed > newMemUsage) {
 //            // There is wasted memory.  Create the smallest buffer that can fit the
@@ -345,8 +345,8 @@ public class NoiseMap {
      *
      * @param borderValue The value to use for all positions outside of the noise map.
      */
-    public void SetBorderValue(float borderValue) {
-        m_borderValue = borderValue;
+    public void setBorderValue(float borderValue) {
+        this.borderValue = borderValue;
     }
 
     /**
@@ -365,7 +365,7 @@ public class NoiseMap {
      * @pre The width and height values are positive.
      * @pre The width and height values do not exceed the maximum possible width and height for the noise map.
      */
-    public void SetSize(int width, int height) {
+    public void setSize(int width, int height) {
         if (width < 0 || height < 0
                 || width > RASTER_MAX_WIDTH || height > RASTER_MAX_HEIGHT) {
             // Invalid width or height.
@@ -373,26 +373,26 @@ public class NoiseMap {
         } else if (width == 0 || height == 0) {
             // An empty noise map was specified.  Delete it and zero out the size
             // member variables.
-            DeleteNoiseMapAndReset();
+            deleteNoiseMapAndReset();
         } else {
             // A new noise map size was specified.  Allocate a new noise map buffer
             // unless the current buffer is large enough for the new noise map (we
             // don't want costly reallocations going on.)
-            long newMemUsage = CalcMinMemUsage(width, height);
-            if (m_memUsed < newMemUsage) {
+            long newMemUsage = calcMinMemUsage(width, height);
+            if (memUsed < newMemUsage) {
                 // The new size is too big for the current noise map buffer.  We need to
                 // reallocate.
-                DeleteNoiseMapAndReset();
+                deleteNoiseMapAndReset();
                 try {
-                    m_pNoiseMap = new float[(int) newMemUsage];
+                    noiseMap = new float[(int) newMemUsage];
                 } catch (Exception e) {
                     throw new ExceptionOutOfMemory();
                 }
-                m_memUsed = newMemUsage;
+                memUsed = newMemUsage;
             }
-            m_stride = (int) CalcStride(width);
-            m_width = width;
-            m_height = height;
+            stride = (int) calcStride(width);
+            this.width = width;
+            this.height = height;
         }
     }
 
@@ -405,9 +405,9 @@ public class NoiseMap {
      * @param y     The y coordinate of the position.
      * @param value The value to set at the given position.
      */
-    public void SetValue(int x, int y, float value) {
-        if (m_pNoiseMap != null) {
-            if (x >= 0 && x < m_width && y >= 0 && y < m_height) {
+    public void setValue(int x, int y, float value) {
+        if (noiseMap != null) {
+            if (x >= 0 && x < width && y >= 0 && y < height) {
 //                *(GetSlabPtr(x, y)) = value;
                 throw new NotImplementedException();
             }
@@ -423,15 +423,15 @@ public class NoiseMap {
      *
      * @param source The source noise map.
      */
-    public void TakeOwnership(NoiseMap source) {
+    public void takeOwnership(NoiseMap source) {
         // Copy the values and the noise map buffer from the source noise map to
         // this noise map.  Now this noise map pwnz the source buffer.
 //        delete[] m_pNoiseMap;
-        m_memUsed = source.m_memUsed;
-        m_height = source.m_height;
-        m_pNoiseMap = source.m_pNoiseMap;
-        m_stride = source.m_stride;
-        m_width = source.m_width;
+        memUsed = source.memUsed;
+        height = source.height;
+        noiseMap = source.noiseMap;
+        stride = source.stride;
+        width = source.width;
 
         // Now that the source buffer is assigned to this noise map, reset the
         // source noise map object.
@@ -448,8 +448,8 @@ public class NoiseMap {
      * @param height The height of the noise map.
      * @return The minimum amount of memory required to store the noise map.
      */
-    private long CalcMinMemUsage(int width, int height) {
-        return CalcStride(width * height);
+    private long calcMinMemUsage(int width, int height) {
+        return calcStride(width * height);
     }
 
     /**
@@ -463,7 +463,7 @@ public class NoiseMap {
      * @param width The width of the noise map.
      * @return The stride amount.
      */
-    private long CalcStride(int width) {
+    private long calcStride(int width) {
         return width;//(long) (((width + RASTER_STRIDE_BOUNDARY - 1) / RASTER_STRIDE_BOUNDARY) * RASTER_STRIDE_BOUNDARY);
     }
 
@@ -480,19 +480,18 @@ public class NoiseMap {
      * to make a bitwise copy of anything, like, say, a DVD.  Don't call
      * this method if you live in the USA.
      */
-    private void CopyNoiseMap (NoiseMap source) {
-//        // Resize the noise map buffer, then copy the slabs from the source noise
-//        // map buffer to this noise map buffer.
-//        SetSize(source.GetWidth(), source.GetHeight());
-//        for (int y = 0; y < source.GetHeight(); y++) {
-//            const float*pSource = source.GetConstSlabPtr(0, y);
-//            float*pDest = GetSlabPtr(0, y);
-//            memcpy(pDest, pSource, (size_t) source.GetWidth() * sizeof(float));
-//        }
-//
-//        // Copy the border value as well.
-//        m_borderValue = source.m_borderValue;
-        throw new NotImplementedException();
+    private void copyNoiseMap(NoiseMap source) {
+        // Resize the noise map buffer, then copy the slabs from the source noise
+        // map buffer to this noise map buffer.
+        setSize(source.getWidth(), source.getHeight());
+        for (int y = 0; y < source.getHeight(); y++) {
+            ArrayPointer.NativeFloatPrim src = source.getConstSlabPtr(0, y);
+            ArrayPointer.NativeFloatPrim dest = getSlabPtr(0, y);
+            src.copyTo(dest, source.getWidth());
+        }
+
+        // Copy the border value as well.
+        borderValue = source.borderValue;
     }
 
     /**
@@ -500,8 +499,7 @@ public class NoiseMap {
      * <p/>
      * This method is similar to the InitObj() method, except this method deletes the buffer in this noise map.
      */
-    private void DeleteNoiseMapAndReset() {
-//        delete[] m_pNoiseMap;
+    private void deleteNoiseMapAndReset() {
         InitObj();
     }
 
@@ -512,11 +510,11 @@ public class NoiseMap {
      * @pre The noise map buffer must not exist.
      */
     private void InitObj() {
-        m_pNoiseMap = null;
-        m_height = 0;
-        m_width = 0;
-        m_stride = 0;
-        m_memUsed = 0;
-        m_borderValue = 0.0f;
+        noiseMap = null;
+        height = 0;
+        width = 0;
+        stride = 0;
+        memUsed = 0;
+        borderValue = 0.0f;
     }
 }

@@ -21,7 +21,6 @@
  * The developer's email is jlbezigvins@gmzigail.com (for great email, take
  * off every 'zig'.)
  */
-
 package jLibNoise.noise.utils;
 
 import jLibNoise.noise.ExceptionInvalidParam;
@@ -64,17 +63,17 @@ import jLibNoise.noise.Misc;
 public class GradientColor {
 
     // Number of gradient points.
-    int m_gradientPointCount;
+    int gradientPointCount;
 
     /// Array that stores the gradient points.
-    GradientPoint[] m_pGradientPoints;
+    GradientPoint[] gradientPoints;
 
     // A color object that is used by a gradient object to store a temporary value.
     /*mutable*/
-    Color m_workingColor;
+    Color workingColor;
 
     public GradientColor() {
-        m_workingColor = new Color();
+        workingColor = new Color();
     }
 
     /**
@@ -87,12 +86,12 @@ public class GradientColor {
      * @throws :ExceptionInvalidParam See the precondition.
      * @pre No two gradient points have the same position.
      */
-    public void AddGradientPoint(double gradientPos, Color gradientColor) {
+    public void addGradientPoint(double gradientPos, Color gradientColor) {
         // Find the insertion point for the new gradient point and insert the new
         // gradient point at that insertion point.  The gradient point array will
         // remain sorted by gradient position.
-        int insertionPos = FindInsertionPos(gradientPos);
-        InsertAtPos(insertionPos, gradientPos, gradientColor);
+        int insertionPos = findInsertionPos(gradientPos);
+        insertAtPos(insertionPos, gradientPos, gradientColor);
     }
 
     /**
@@ -100,9 +99,9 @@ public class GradientColor {
      *
      * @post All gradient points from this gradient object are deleted.
      */
-    public void Clear() {
-        m_pGradientPoints = null;
-        m_gradientPointCount = 0;
+    public void clear() {
+        gradientPoints = null;
+        gradientPointCount = 0;
     }
 
     /**
@@ -111,22 +110,22 @@ public class GradientColor {
      * @param gradientPos The specified position.
      * @return The color at that position.
      */
-    public Color GetColor(double gradientPos) {
-        assert (m_gradientPointCount >= 2);
+    public Color getColor(double gradientPos) {
+        assert (gradientPointCount >= 2);
 
         // Find the first element in the gradient point array that has a gradient
         // position larger than the gradient position passed to this method.
         int indexPos;
-        for (indexPos = 0; indexPos < m_gradientPointCount; indexPos++) {
-            if (gradientPos < m_pGradientPoints[indexPos].pos) {
+        for (indexPos = 0; indexPos < gradientPointCount; indexPos++) {
+            if (gradientPos < gradientPoints[indexPos].pos) {
                 break;
             }
         }
 
         // Find the two nearest gradient points so that we can perform linear
         // interpolation on the color.
-        int index0 = Misc.ClampValue(indexPos - 1, 0, m_gradientPointCount - 1);
-        int index1 = Misc.ClampValue(indexPos, 0, m_gradientPointCount - 1);
+        int index0 = Misc.clampValue(indexPos - 1, 0, gradientPointCount - 1);
+        int index1 = Misc.clampValue(indexPos, 0, gradientPointCount - 1);
 
         // If some gradient points are missing (which occurs if the gradient
         // position passed to this method is greater than the largest gradient
@@ -134,20 +133,20 @@ public class GradientColor {
         // the corresponding gradient color of the nearest gradient point and exit
         // now.
         if (index0 == index1) {
-            m_workingColor = new Color(m_pGradientPoints[index1].color);
-            return m_workingColor;
+            workingColor = new Color(gradientPoints[index1].color);
+            return workingColor;
         }
 
         // Compute the alpha value used for linear interpolation.
-        double input0 = m_pGradientPoints[index0].pos;
-        double input1 = m_pGradientPoints[index1].pos;
+        double input0 = gradientPoints[index0].pos;
+        double input1 = gradientPoints[index1].pos;
         double alpha = (gradientPos - input0) / (input1 - input0);
 
         // Now perform the linear interpolation given the alpha value.
-        Color color0 = m_pGradientPoints[index0].color;
-        Color color1 = m_pGradientPoints[index1].color;
-        Utils.LinearInterpColor(color0, color1, (float) alpha, m_workingColor);
-        return m_workingColor;
+        Color color0 = gradientPoints[index0].color;
+        Color color1 = gradientPoints[index1].color;
+        Utils.linearInterpColor(color0, color1, (float) alpha, workingColor);
+        return workingColor;
     }
 
     /**
@@ -162,8 +161,8 @@ public class GradientColor {
      *
      * @return A pointer to the array of gradient points.
      */
-    public GradientPoint[] GetGradientPointArray() {
-        return m_pGradientPoints;
+    public GradientPoint[] getGradientPointArray() {
+        return gradientPoints;
     }
 
     /**
@@ -171,8 +170,8 @@ public class GradientColor {
      *
      * @return The number of gradient points stored in this object.
      */
-    public int GetGradientPointCount() {
-        return m_gradientPointCount;
+    public int getGradientPointCount() {
+        return gradientPointCount;
     }
 
     /**
@@ -190,14 +189,14 @@ public class GradientColor {
      *          See the precondition.
      * @pre No two gradient points have the same input value.
      */
-    private int FindInsertionPos(double gradientPos) {
+    private int findInsertionPos(double gradientPos) {
         int insertionPos;
-        for (insertionPos = 0; insertionPos < m_gradientPointCount;
+        for (insertionPos = 0; insertionPos < gradientPointCount;
              insertionPos++) {
-            if (gradientPos < m_pGradientPoints[insertionPos].pos) {
+            if (gradientPos < gradientPoints[insertionPos].pos) {
                 // We found the array index in which to insert the new gradient point, exit now.
                 break;
-            } else if (gradientPos == m_pGradientPoints[insertionPos].pos) {
+            } else if (gradientPos == gradientPoints[insertionPos].pos) {
                 // Each gradient point is required to contain a unique gradient position, so throw an exception.
                 throw new ExceptionInvalidParam();
             }
@@ -221,26 +220,26 @@ public class GradientColor {
      * @param gradientPos   The position of this gradient point.
      * @param gradientColor The color of this gradient point.
      */
-    private void InsertAtPos(int insertionPos, double gradientPos, Color gradientColor) {
+    private void insertAtPos(int insertionPos, double gradientPos, Color gradientColor) {
         // Make room for the new gradient point at the specified insertion position
         // within the gradient point array.  The insertion position is determined by
         // the gradient point's position; the gradient points must be sorted by
         // gradient position within that array.
-        GradientPoint[] newGradientPoints = new GradientPoint[m_gradientPointCount + 1];
-        newGradientPoints[m_gradientPointCount] = new GradientPoint();
-        for (int i = 0; i < m_gradientPointCount; i++) {
+        GradientPoint[] newGradientPoints = new GradientPoint[gradientPointCount + 1];
+        newGradientPoints[gradientPointCount] = new GradientPoint();
+        for (int i = 0; i < gradientPointCount; i++) {
             if (i < insertionPos) {
-                newGradientPoints[i] = m_pGradientPoints[i];
+                newGradientPoints[i] = gradientPoints[i];
             } else {
-                newGradientPoints[i + 1] = m_pGradientPoints[i];
+                newGradientPoints[i + 1] = gradientPoints[i];
             }
         }
-        m_pGradientPoints = newGradientPoints;
-        ++m_gradientPointCount;
+        gradientPoints = newGradientPoints;
+        ++gradientPointCount;
 
         // Now that we've made room for the new gradient point within the array, add
         // the new gradient point.
-        m_pGradientPoints[insertionPos].pos = gradientPos;
-        m_pGradientPoints[insertionPos].color = gradientColor;
+        gradientPoints[insertionPos].pos = gradientPos;
+        gradientPoints[insertionPos].color = gradientColor;
     }
 }

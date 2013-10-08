@@ -21,7 +21,6 @@
  * The developer's email is jlbezigvins@gmzigail.com (for great email, take
  * off every 'zig'.)
  */
-
 package jLibNoise.noise.utils;
 
 import jLibNoise.noise.module.Module;
@@ -72,15 +71,15 @@ public abstract class NoiseMapBuilder {
      * contains a count of the rows that have been completed.  It returns
      * void.  Pass a function with this signature to the SetCallback() method.
      */
-    protected NoiseMapCallback m_pCallback;
+    protected NoiseMapCallback callback;
     // Height of the destination noise map, in points.
-    protected int m_destHeight;
+    protected int destHeight;
     // Width of the destination noise map, in points.
-    protected int m_destWidth;
+    protected int destWidth;
     // Destination noise map that will contain the coherent-noise values.
-    protected NoiseMap m_pDestNoiseMap;
+    protected NoiseMap destNoiseMap;
     // Source noise module that will generate the coherent-noise values.
-    protected Module m_pSourceModule;
+    protected Module sourceModule;
 
     /**
      * Builds the noise map.
@@ -100,7 +99,7 @@ public abstract class NoiseMapBuilder {
      * exceed the maximum possible width and height for the noise map.
      * @post The original contents of the destination noise map is destroyed.
      */
-    public abstract void Build();
+    public abstract void build();
 
     /**
      * Returns the height of the destination noise map.
@@ -110,8 +109,8 @@ public abstract class NoiseMapBuilder {
      *
      * @return The height of the destination noise map, in points.
      */
-    public double GetDestHeight() {
-        return m_destHeight;
+    public double getDestHeight() {
+        return destHeight;
     }
 
     /**
@@ -122,8 +121,8 @@ public abstract class NoiseMapBuilder {
      *
      * @return The width of the destination noise map, in points.
      */
-    public double GetDestWidth() {
-        return m_destWidth;
+    public double getDestWidth() {
+        return destWidth;
     }
 
     /**
@@ -136,8 +135,8 @@ public abstract class NoiseMapBuilder {
      *
      * @param pCallback The callback function.
      */
-    public void SetCallback(NoiseMapCallback pCallback) {
-        m_pCallback = pCallback;
+    public void setCallback(NoiseMapCallback callback) {
+        this.callback = callback;
     }
 
     /**
@@ -151,8 +150,8 @@ public abstract class NoiseMapBuilder {
      *
      * @param destNoiseMap The destination noise map.
      */
-    public void SetDestNoiseMap(NoiseMap destNoiseMap) {
-        m_pDestNoiseMap = destNoiseMap;
+    public void setDestNoiseMap(NoiseMap destNoiseMap) {
+        this.destNoiseMap = destNoiseMap;
     }
 
     /**
@@ -165,8 +164,8 @@ public abstract class NoiseMapBuilder {
      *
      * @param sourceModule The source module.
      */
-    public void SetSourceModule(Module sourceModule) {
-        m_pSourceModule = sourceModule;
+    public void setSourceModule(Module sourceModule) {
+        this.sourceModule = sourceModule;
     }
 
     /**
@@ -177,8 +176,8 @@ public abstract class NoiseMapBuilder {
      * @param destWidth  The width of the destination noise map, in points.
      * @param destHeight The height of the destination noise map, in points.
      */
-    public void SetDestSize(int destWidth, int destHeight) {
-        m_destWidth = destWidth;
-        m_destHeight = destHeight;
+    public void setDestSize(int destWidth, int destHeight) {
+        this.destWidth = destWidth;
+        this.destHeight = destHeight;
     }
 }

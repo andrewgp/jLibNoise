@@ -21,7 +21,6 @@
  * The developer's email is jlbezigvins@gmzigail.com (for great email, take
  * off every 'zig'.)
  */
-
 package jLibNoise.noise.utils;
 
 import jLibNoise.noise.ExceptionInvalidParam;
@@ -87,27 +86,27 @@ public class Image {
     public static final int RASTER_MAX_HEIGHT = 32767;
 
     // The Color value used for all positions outside of the image.
-    private Color m_borderValue;
+    private Color borderValue;
     // The current height of the image.
-    private int m_height;
+    private int height;
     /**
      * The amount of memory allocated for the image.
      * This value is equal to the number of Color objects allocated for the image, not the number of bytes.
      */
-    long m_memUsed;
+    long memUsed;
     // A pointer to the image buffer.
-    Color[] m_pImage;
+    Color[] image;
     // The stride amount of the image.
-    private int m_stride;
+    private int stride;
     // The current width of the image.
-    private int m_width;
+    private int width;
 
     /**
      * Constructor.
      * Creates an empty image.
      */
     public Image() {
-        InitObj();
+        initObj();
     }
 
     /**
@@ -126,8 +125,8 @@ public class Image {
      * @pre The width and height values do not exceed the maximum possible width and height for the image.
      */
     public Image(int width, int height) {
-        InitObj();
-        SetSize(width, height);
+        initObj();
+        setSize(width, height);
     }
 
     /**
@@ -138,8 +137,8 @@ public class Image {
      *          Out of memory.
      */
     public Image(Image rhs) {
-        InitObj();
-        CopyImage(rhs);
+        initObj();
+        copyImage(rhs);
     }
 
     /**
@@ -147,11 +146,10 @@ public class Image {
      *
      * @param value The color value that all positions within the image are cleared to.
      */
-    public void Clear(Color value) {
-        for (int i = 0; i < m_height * m_width; i++) {
-            m_pImage[i] = value;
+    public void clear(Color value) {
+        for (int i = 0; i < height * width; i++) {
+            image[i] = value;
         }
-        throw new NotImplementedException();
     }
 
     /**
@@ -162,8 +160,8 @@ public class Image {
      *
      * @return The color value used for all positions outside of the image.
      */
-    public Color GetBorderValue() {
-        return m_borderValue;
+    public Color getBorderValue() {
+        return borderValue;
     }
 
     /**
@@ -171,7 +169,7 @@ public class Image {
      *
      * @return A const pointer to a slab at the position (0, 0), or @a NULL if the image is empty.
      */
-    public Color GetConstSlabPtr() {
+    public Color getConstSlabPtr() {
         throw new NotImplementedException();
 //      return m_pImage;
     }
@@ -186,8 +184,8 @@ public class Image {
      * @return A const pointer to a slab at the position ( 0, @a row ), or @a NULL if the image is empty.
      * @pre The coordinates must exist within the bounds of the image.
      */
-    public ArrayPointer<Color> GetConstSlabPtr(int row) {
-        return GetConstSlabPtr(0, row);
+    public ArrayPointer<Color> getConstSlabPtr(int row) {
+        return getConstSlabPtr(0, row);
     }
 
     /**
@@ -201,8 +199,8 @@ public class Image {
      * @return A const pointer to a slab at the position ( @a x, @a y ), or @a NULL if the image is empty.
      * @pre The coordinates must exist within the bounds of the image.
      */
-    public ArrayPointer<Color> GetConstSlabPtr(int x, int y) {
-        return GetSlabPtr(x, y);
+    public ArrayPointer<Color> getConstSlabPtr(int x, int y) {
+        return getSlabPtr(x, y);
     }
 
     /**
@@ -210,8 +208,8 @@ public class Image {
      *
      * @return The height of the image.
      */
-    public int GetHeight() {
-        return m_height;
+    public int getHeight() {
+        return height;
     }
 
     /**
@@ -221,8 +219,8 @@ public class Image {
      *
      * @return Returns the amount of memory allocated for this image.
      */
-    public long GetMemUsed() {
-        return m_memUsed;
+    public long getMemUsed() {
+        return memUsed;
     }
 
     /**
@@ -230,7 +228,7 @@ public class Image {
      *
      * @return A pointer to a slab at the position (0, 0), or @a NULL if the image is empty.
      */
-    public Color GetSlabPtr() {
+    public Color getSlabPtr() {
 //        return m_pImage;
         throw new NotImplementedException();
     }
@@ -244,8 +242,8 @@ public class Image {
      * @return A pointer to a slab at the position ( 0, @a row ), or @a NULL if the image is empty.
      * @pre The coordinates must exist within the bounds of the image.
      */
-    public ArrayPointer<Color> GetSlabPtr(int row) {
-        return GetSlabPtr(0, row);
+    public ArrayPointer<Color> getSlabPtr(int row) {
+        return getSlabPtr(0, row);
     }
 
     /**
@@ -259,9 +257,8 @@ public class Image {
      * @return A pointer to a slab at the position ( @a x, @a y ), or @a NULL if the image is empty.
      * @pre The coordinates must exist within the bounds of the image.
      */
-    public ArrayPointer<Color> GetSlabPtr(int x, int y) {
-//      return m_pImage + x + m_stride * y;
-        return new ArrayPointer<Color>(m_pImage, x + (y * m_width));
+    public ArrayPointer<Color> getSlabPtr(int x, int y) {
+        return new ArrayPointer<Color>(image, x + (y * width));
     }
 
     /**
@@ -274,8 +271,8 @@ public class Image {
      *
      * @return The stride amount of the image.
      */
-    public int GetStride() {
-        return m_stride;
+    public int getStride() {
+        return stride;
     }
 
     /**
@@ -287,14 +284,14 @@ public class Image {
      * @param y The y coordinate of the position.
      * @return The color value at that position.
      */
-    public Color GetValue(int x, int y) {
-        if (m_pImage != null) {
-            if (x >= 0 && x < m_width && y >= 0 && y < m_height) {
-                return m_pImage[x * y];
+    public Color getValue(int x, int y) {
+        if (image != null) {
+            if (x >= 0 && x < width && y >= 0 && y < height) {
+                return image[x * y];
             }
         }
         // The coordinates specified are outside the image.  Return the border value.
-        return m_borderValue;
+        return borderValue;
     }
 
     /**
@@ -302,8 +299,8 @@ public class Image {
      *
      * @return The width of the image.
      */
-    public int GetWidth() {
-        return m_width;
+    public int getWidth() {
+        return width;
     }
 
     /**
@@ -316,7 +313,7 @@ public class Image {
      *          method can return an out-of-memory exception because two images
      *          will exist temporarily in memory during this call.)
      */
-    public void ReclaimMem() {
+    public void reclaimMem() {
 //        size_t newMemUsage = CalcMinMemUsage(m_width, m_height);
 //        if (m_memUsed > newMemUsage) {
 //            // There is wasted memory.  Create the smallest buffer that can fit the
@@ -343,8 +340,8 @@ public class Image {
      *
      * @param borderValue The color value to use for all positions outside of the image.
      */
-    public void SetBorderValue(Color borderValue) {
-        m_borderValue = borderValue;
+    public void setBorderValue(Color borderValue) {
+        borderValue = borderValue;
     }
 
     /**
@@ -363,32 +360,32 @@ public class Image {
      * @pre The width and height values are positive.
      * @pre The width and height values do not exceed the maximum possible width and height for the image.
      */
-    public void SetSize(int width, int height) {
+    public void setSize(int width, int height) {
         if (width < 0 || height < 0 || width > RASTER_MAX_WIDTH || height > RASTER_MAX_HEIGHT) {
             // Invalid width or height.
             throw new ExceptionInvalidParam();
         } else if (width == 0 || height == 0) {
             // An empty image was specified.  Delete it and zero out the size member variables.
-            DeleteImageAndReset();
+            deleteImageAndReset();
         } else {
             // A new image size was specified.  Allocate a new image buffer unless
             // the current buffer is large enough for the new image (we don't want
             // costly reallocations going on.)
-            long newMemUsage = CalcMinMemUsage(width, height);
-            if (m_memUsed < newMemUsage) {
+            long newMemUsage = calcMinMemUsage(width, height);
+            if (memUsed < newMemUsage) {
                 // The new size is too big for the current image buffer.  We need to
                 // reallocate.
-                DeleteImageAndReset();
+                deleteImageAndReset();
                 try {
-                    m_pImage = new Color[(int) newMemUsage];
+                    image = new Color[(int) newMemUsage];
                 } catch (Exception e) {
                     throw new ExceptionOutOfMemory();
                 }
-                m_memUsed = newMemUsage;
+                memUsed = newMemUsage;
             }
-            m_stride = (int) CalcStride(width);
-            m_width = width;
-            m_height = height;
+            stride = (int) calcStride(width);
+            this.width = width;
+            this.height = height;
         }
     }
 
@@ -402,13 +399,12 @@ public class Image {
      * @param y     The y coordinate of the position.
      * @param value The color value to set at the given position.
      */
-    public void SetValue(int x, int y, Color value) {
-//        if (m_pImage != NULL) {
-//            if (x >= 0 && x < m_width && y >= 0 && y < m_height) {
-//                *(GetSlabPtr(x, y)) = value;
-//            }
-//        }
-        m_pImage[x * y] = value;
+    public void setValue(int x, int y, Color value) {
+        if (image != null) {
+            if (x >= 0 && x < width && y >= 0 && y < height) {
+                image[x * y] = value;
+            }
+        }
     }
 
     /**
@@ -420,7 +416,7 @@ public class Image {
      *
      * @param source The source image.
      */
-    public void TakeOwnership(Image source) {
+    public void takeOwnership(Image source) {
         // Copy the values and the image buffer from the source image to this image.
 //        // Now this image pwnz the source buffer.
 //        delete[] m_pImage;
@@ -446,8 +442,8 @@ public class Image {
      * @param height The height of the image.
      * @return The minimum amount of memory required to store the image.
      */
-    private long CalcMinMemUsage(int width, int height) {
-        return CalcStride(width * height);
+    private long calcMinMemUsage(int width, int height) {
+        return calcStride(width * height);
     }
 
     /**
@@ -461,7 +457,7 @@ public class Image {
      * @param width The width of the image.
      * @return The stride amount.
      */
-    private long CalcStride(int width) {
+    private long calcStride(int width) {
         return (((width + RASTER_STRIDE_BOUNDARY - 1) / RASTER_STRIDE_BOUNDARY) * RASTER_STRIDE_BOUNDARY);
     }
 
@@ -474,19 +470,18 @@ public class Image {
      * @throws jLibNoise.noise.ExceptionOutOfMemory
      *          Out of memory.
      */
-    private void CopyImage(Image source) {
-//        // Resize the image buffer, then copy the slabs from the source image
-//        // buffer to this image buffer.
-//        SetSize(source.GetWidth(), source.GetHeight());
-//        for (int y = 0; y < source.GetHeight(); y++) {
-//            const Color * pSource = source.GetConstSlabPtr(0, y);
-//            Color * pDest = GetSlabPtr(0, y);
-//            memcpy(pDest, pSource, (size_t) source.GetWidth() * sizeof(float));
-//        }
-//
-//        // Copy the border value as well.
-//        m_borderValue = source.m_borderValue;
-        throw new NotImplementedException();
+    private void copyImage(Image source) {
+        // Resize the image buffer, then copy the slabs from the source image
+        // buffer to this image buffer.
+        setSize(source.getWidth(), source.getHeight());
+        for (int y = 0; y < source.getHeight(); y++) {
+            ArrayPointer<Color> pSource = source.getConstSlabPtr(0, y);
+            ArrayPointer<Color> pDest = getSlabPtr(0, y);
+            pSource.copyTo(pDest);
+        }
+
+        // Copy the border value as well.
+        borderValue = source.borderValue;
     }
 
     /**
@@ -495,9 +490,8 @@ public class Image {
      * This method is similar to the InitObj() method, except this method
      * deletes the memory allocated to the image.
      */
-    private void DeleteImageAndReset() {
-//        delete[] m_pImage;
-        InitObj();
+    private void deleteImageAndReset() {
+        initObj();
     }
 
     /**
@@ -506,13 +500,13 @@ public class Image {
      * @pre Must be called during object construction.
      * @pre The image buffer must not exist.
      */
-    void InitObj() {
-        m_pImage = null;
-        m_height = 0;
-        m_width = 0;
-        m_stride = 0;
-        m_memUsed = 0;
-        m_borderValue = new Color(0, 0, 0, 0);
+    void initObj() {
+        image = null;
+        height = 0;
+        width = 0;
+        stride = 0;
+        memUsed = 0;
+        borderValue = new Color(0, 0, 0, 0);
     }
 
 }

@@ -21,14 +21,12 @@
  * The developer's email is jlbezigvins@gmzigail.com (for great email, take
  * off every 'zig'.)
  */
-
 package jLibNoise.noise.utils;
 
 import jLibNoise.noise.ExceptionInvalidParam;
 import jLibNoise.noise.Interp;
 import jLibNoise.noise.MathConst;
 import jLibNoise.noise.Misc;
-import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 /**
  * Renders an image from a noise map.
@@ -130,58 +128,59 @@ import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 public class RendererImage {
 
     // The cosine of the azimuth of the light source.
-    private double m_cosAzimuth;
+    private double cosAzimuth;
     // The cosine of the elevation of the light source.
-    private double m_cosElev;
+    private double cosElev;
     // The color gradient used to specify the image colors.
-    private GradientColor m_gradient;
+    private GradientColor gradient;
     // A flag specifying whether lighting is enabled.
-    private boolean m_isLightEnabled;
+    private boolean isLightEnabled;
     // A flag specifying whether wrapping is enabled.
-    private boolean m_isWrapEnabled;
+    private boolean isWrapEnabled;
     // The azimuth of the light source, in degrees.
-    private double m_lightAzimuth;
+    private double lightAzimuth;
     // The brightness of the light source.
-    private double m_lightBrightness;
+    private double lightBrightness;
     // The color of the light source.
-    private Color m_lightColor;
+    private Color lightColor;
     // The contrast between areas in light and areas in shadow.
-    private double m_lightContrast;
+    private double lightContrast;
     // The elevation of the light source, in degrees.
-    private double m_lightElev;
+    private double lightElev;
     // The intensity of the light source.
-    private double m_lightIntensity;
+    private double lightIntensity;
     // A pointer to the background image.
-    private Image m_pBackgroundImage;
+    private Image backgroundImage;
     // A pointer to the destination image.
-    private Image m_pDestImage;
+    private Image destImage;
     // A pointer to the source noise map.
-    private NoiseMap m_pSourceNoiseMap;
+    private NoiseMap sourceNoiseMap;
+    
     /**
      * Used by the CalcLightIntensity() method to recalculate the light values only if the light parameters change.
      * <p/>
      * When the light parameters change, this value is set to True.  When
      * the CalcLightIntensity() method is called, this value is set to false.
      */
-    private boolean m_recalcLightValues;
+    private boolean recalcLightValues;
     // The sine of the azimuth of the light source.
-    private double m_sinAzimuth;
+    private double sinAzimuth;
     // The sine of the elevation of the light source.
-    private double m_sinElev;
+    private double sinElev;
 
     public RendererImage() {
-        m_isLightEnabled = false;
-        m_isWrapEnabled = false;
-        m_lightAzimuth = 45.0;
-        m_lightBrightness = 1.0;
-        m_lightColor = new Color(255, 255, 255, 255);
-        m_lightContrast = 1.0;
-        m_lightElev = 45.0;
-        m_lightIntensity = 1.0;
-        m_recalcLightValues = true;
-        m_gradient = new GradientColor();
+        isLightEnabled = false;
+        isWrapEnabled = false;
+        lightAzimuth = 45.0;
+        lightBrightness = 1.0;
+        lightColor = new Color(255, 255, 255, 255);
+        lightContrast = 1.0;
+        lightElev = 45.0;
+        lightIntensity = 1.0;
+        recalcLightValues = true;
+        gradient = new GradientColor();
 
-        BuildGrayscaleGradient();
+        buildGrayscaleGradient();
     }
 
     /**
@@ -207,8 +206,8 @@ public class RendererImage {
      *          See the preconditions.
      * @pre No two gradient points have the same position.
      */
-    public void AddGradientPoint(double gradientPos, Color gradientColor) {
-        m_gradient.AddGradientPoint(gradientPos, gradientColor);
+    public void addGradientPoint(double gradientPos, Color gradientColor) {
+        gradient.addGradientPoint(gradientPos, gradientColor);
     }
 
     /**
@@ -220,10 +219,10 @@ public class RendererImage {
      *
      * @post The original gradient is cleared and a grayscale gradient is created.
      */
-    public void BuildGrayscaleGradient() {
-        ClearGradient();
-        m_gradient.AddGradientPoint(-1.0, new Color(0, 0, 0, 255));
-        m_gradient.AddGradientPoint(1.0, new Color(255, 255, 255, 255));
+    public void buildGrayscaleGradient() {
+        clearGradient();
+        gradient.addGradientPoint(-1.0, new Color(0, 0, 0, 255));
+        gradient.addGradientPoint(1.0, new Color(255, 255, 255, 255));
     }
 
     /**
@@ -235,17 +234,17 @@ public class RendererImage {
      *
      * @post The original gradient is cleared and a terrain gradient is created.
      */
-    public void BuildTerrainGradient() {
-        ClearGradient();
-        m_gradient.AddGradientPoint(-1.00, new Color(0, 0, 128, 255));
-        m_gradient.AddGradientPoint(-0.20, new Color(32, 64, 128, 255));
-        m_gradient.AddGradientPoint(-0.04, new Color(64, 96, 192, 255));
-        m_gradient.AddGradientPoint(-0.02, new Color(192, 192, 128, 255));
-        m_gradient.AddGradientPoint(0.00, new Color(0, 192, 0, 255));
-        m_gradient.AddGradientPoint(0.25, new Color(192, 192, 0, 255));
-        m_gradient.AddGradientPoint(0.50, new Color(160, 96, 64, 255));
-        m_gradient.AddGradientPoint(0.75, new Color(128, 255, 255, 255));
-        m_gradient.AddGradientPoint(1.00, new Color(255, 255, 255, 255));
+    public void buildTerrainGradient() {
+        clearGradient();
+        gradient.addGradientPoint(-1.00, new Color(0, 0, 128, 255));
+        gradient.addGradientPoint(-0.20, new Color(32, 64, 128, 255));
+        gradient.addGradientPoint(-0.04, new Color(64, 96, 192, 255));
+        gradient.addGradientPoint(-0.02, new Color(192, 192, 128, 255));
+        gradient.addGradientPoint(0.00, new Color(0, 192, 0, 255));
+        gradient.addGradientPoint(0.25, new Color(192, 192, 0, 255));
+        gradient.addGradientPoint(0.50, new Color(160, 96, 64, 255));
+        gradient.addGradientPoint(0.75, new Color(128, 255, 255, 255));
+        gradient.addGradientPoint(1.00, new Color(255, 255, 255, 255));
     }
 
     /**
@@ -254,8 +253,8 @@ public class RendererImage {
      * Before calling the Render() method, the application must specify a
      * new color gradient with at least two gradient points.
      */
-    public void ClearGradient() {
-        m_gradient.Clear();
+    public void clearGradient() {
+        gradient.clear();
     }
 
     /**
@@ -266,12 +265,12 @@ public class RendererImage {
      *
      * @param enable A flag that enables or disables the light source.
      */
-    public void EnableLight(boolean enable) {
-        m_isLightEnabled = enable;
+    public void enableLight(boolean enable) {
+        isLightEnabled = enable;
     }
 
-    public void EnableLight() {
-        EnableLight(true);
+    public void enableLight() {
+        enableLight(true);
     }
 
     /**
@@ -289,12 +288,12 @@ public class RendererImage {
      *
      * @param enable A flag that enables or disables noise-map wrapping.
      */
-    public void EnableWrap(boolean enable) {
-        m_isWrapEnabled = enable;
+    public void enableWrap(boolean enable) {
+        isWrapEnabled = enable;
     }
 
     public void EnableWrap() {
-        EnableWrap(true);
+        enableWrap(true);
     }
 
     /**
@@ -307,8 +306,8 @@ public class RendererImage {
      *
      * @return The azimuth of the light source.
      */
-    public double GetLightAzimuth() {
-        return m_lightAzimuth;
+    public double getLightAzimuth() {
+        return lightAzimuth;
     }
 
     /**
@@ -316,8 +315,8 @@ public class RendererImage {
      *
      * @return The brightness of the light source.
      */
-    public double GetLightBrightness() {
-        return m_lightBrightness;
+    public double getLightBrightness() {
+        return lightBrightness;
     }
 
     /**
@@ -325,8 +324,8 @@ public class RendererImage {
      *
      * @return The color of the light source.
      */
-    public Color GetLightColor() {
-        return m_lightColor;
+    public Color getLightColor() {
+        return lightColor;
     }
 
     /**
@@ -344,8 +343,8 @@ public class RendererImage {
      *
      * @return The contrast of the light source.
      */
-    public double GetLightContrast() {
-        return m_lightContrast;
+    public double getLightContrast() {
+        return lightContrast;
     }
 
     /**
@@ -357,8 +356,8 @@ public class RendererImage {
      *
      * @return The elevation of the light source.
      */
-    public double GetLightElev() {
-        return m_lightElev;
+    public double getLightElev() {
+        return lightElev;
     }
 
     /**
@@ -366,8 +365,8 @@ public class RendererImage {
      *
      * @return The intensity of the light source.
      */
-    public double GetLightIntensity() {
-        return m_lightIntensity;
+    public double getLightIntensity() {
+        return lightIntensity;
     }
 
     /**
@@ -375,8 +374,8 @@ public class RendererImage {
      *
      * @return true if the light source is enabled.
      */
-    public boolean IsLightEnabled() {
-        return m_isLightEnabled;
+    public boolean isLightEnabled() {
+        return isLightEnabled;
     }
 
     /**
@@ -394,8 +393,8 @@ public class RendererImage {
      *
      * @return true if noise-map wrapping is enabled.
      */
-    public boolean IsWrapEnabled() {
-        return m_isWrapEnabled;
+    public boolean isWrapEnabled() {
+        return isWrapEnabled;
     }
 
     /**
@@ -414,51 +413,51 @@ public class RendererImage {
      * @pre If a background image was specified, it has the exact same size as the source height map.
      * @post The original contents of the destination image is destroyed.
      */
-    public void Render() {
-        if (m_pSourceNoiseMap == null
-                || m_pDestImage == null
-                || m_pSourceNoiseMap.GetWidth() <= 0
-                || m_pSourceNoiseMap.GetHeight() <= 0
-                || m_gradient.GetGradientPointCount() < 2) {
+    public void render() {
+        if (sourceNoiseMap == null
+                || destImage == null
+                || sourceNoiseMap.getWidth() <= 0
+                || sourceNoiseMap.getHeight() <= 0
+                || gradient.getGradientPointCount() < 2) {
             throw new ExceptionInvalidParam();
         }
 
-        int width = m_pSourceNoiseMap.GetWidth();
-        int height = m_pSourceNoiseMap.GetHeight();
+        int width = sourceNoiseMap.getWidth();
+        int height = sourceNoiseMap.getHeight();
 
         // If a background image was provided, make sure it is the same size the source noise map.
-        if (m_pBackgroundImage != null) {
-            if (m_pBackgroundImage.GetWidth() != width || m_pBackgroundImage.GetHeight() != height) {
+        if (backgroundImage != null) {
+            if (backgroundImage.getWidth() != width || backgroundImage.getHeight() != height) {
                 throw new ExceptionInvalidParam();
             }
         }
 
         // Create the destination image.  It is safe to reuse it if this is also the
         // background image.
-        if (m_pDestImage != m_pBackgroundImage) {
-            m_pDestImage.SetSize(width, height);
+        if (destImage != backgroundImage) {
+            destImage.setSize(width, height);
         }
 
-        ArrayPointer.NativeFloatPrim pSource = m_pSourceNoiseMap.GetConstSlabPtr(0);
-        ArrayPointer<Color> pDest = m_pDestImage.GetSlabPtr(0);
+        ArrayPointer.NativeFloatPrim pSource = sourceNoiseMap.getConstSlabPtr(0);
+        ArrayPointer<Color> pDest = destImage.getSlabPtr(0);
 
         for (int y = 0; y < height; y++) {
             ArrayPointer<Color> pBackground = null;
-            if (m_pBackgroundImage != null) {
-                pBackground = m_pBackgroundImage.GetConstSlabPtr(y);
+            if (backgroundImage != null) {
+                pBackground = backgroundImage.getConstSlabPtr(y);
             }
 
             for (int x = 0; x < width; x++) {
                 // Get the color based on the value at the current point in the noise map.
-                Color destColor = m_gradient.GetColor(pSource.get());
+                Color destColor = gradient.getColor(pSource.get());
                 
                 // If lighting is enabled, calculate the light intensity based on the rate of change at the current point in the noise map.
-                double lightIntensity;
-                if (m_isLightEnabled) {
+                double lightIntensityLocal;
+                if (isLightEnabled) {
                     // Calculate the positions of the current point's four-neighbors.
                     int xLeftOffset, xRightOffset;
                     int yUpOffset, yDownOffset;
-                    if (m_isWrapEnabled) {
+                    if (isWrapEnabled) {
                         if (x == 0) {
                             xLeftOffset = width - 1;
                             xRightOffset = 1;
@@ -501,8 +500,8 @@ public class RendererImage {
                             yUpOffset = 1;
                         }
                     }
-                    yDownOffset *= m_pSourceNoiseMap.GetStride();
-                    yUpOffset *= m_pSourceNoiseMap.GetStride();
+                    yDownOffset *= sourceNoiseMap.getStride();
+                    yUpOffset *= sourceNoiseMap.getStride();
 
                     // Get the noise value of the current point in the source noise map and the noise values of its four-neighbors.
                     double nc = (double) pSource.get();
@@ -512,26 +511,26 @@ public class RendererImage {
                     double nu = (double) pSource.get(yUpOffset);
 
                     // Now we can calculate the lighting intensity.
-                    lightIntensity = CalcLightIntensity(nc, nl, nr, nd, nu);
-                    lightIntensity *= m_lightBrightness;
+                    lightIntensityLocal = calcLightIntensity(nc, nl, nr, nd, nu);
+                    lightIntensityLocal *= lightBrightness;
                 } else {
                     // These values will apply no lighting to the destination image.
-                    lightIntensity = 1.0;
+                    lightIntensityLocal = 1.0;
                 }
 
                 // Get the current background color from the background image.
                 Color backgroundColor = new Color(255, 255, 255, 255);
-                if (m_pBackgroundImage != null) {
+                if (backgroundImage != null) {
                     backgroundColor = pBackground.get();
                 }
 
                 // Blend the destination color, background color, and the light
                 // intensity together, then update the destination image with that color.
-                pDest.assignThenIncrementPosition(CalcDestColor(destColor, backgroundColor, lightIntensity));
+                pDest.assignThenIncrementPosition(calcDestColor(destColor, backgroundColor, lightIntensityLocal));
 
                 // Go to the next point.
                 pSource.increment();
-                if (m_pBackgroundImage != null) {
+                if (backgroundImage != null) {
                     pBackground.increment();
                 }
             }
@@ -552,8 +551,8 @@ public class RendererImage {
      *
      * @param backgroundImage The background image.
      */
-    public void SetBackgroundImage(Image backgroundImage) {
-        m_pBackgroundImage = backgroundImage;
+    public void setBackgroundImage(Image backgroundImage) {
+        this.backgroundImage = backgroundImage;
     }
 
     /**
@@ -567,8 +566,8 @@ public class RendererImage {
      *
      * @param destImage The destination image.
      */
-    public void SetDestImage(Image destImage) {
-        m_pDestImage = destImage;
+    public void setDestImage(Image destImage) {
+        this.destImage = destImage;
     }
 
     /**
@@ -585,9 +584,9 @@ public class RendererImage {
      *
      * @param lightAzimuth The azimuth of the light source.
      */
-    public void SetLightAzimuth(double lightAzimuth) {
-        m_lightAzimuth = lightAzimuth;
-        m_recalcLightValues = true;
+    public void setLightAzimuth(double lightAzimuth) {
+        this.lightAzimuth = lightAzimuth;
+        recalcLightValues = true;
     }
 
     /**
@@ -598,9 +597,9 @@ public class RendererImage {
      *
      * @param lightBrightness The brightness of the light source.
      */
-    public void SetLightBrightness(double lightBrightness) {
-        m_lightBrightness = lightBrightness;
-        m_recalcLightValues = true;
+    public void setLightBrightness(double lightBrightness) {
+        this.lightBrightness = lightBrightness;
+        recalcLightValues = true;
     }
 
     /**
@@ -611,8 +610,8 @@ public class RendererImage {
      *
      * @param lightColor The light color.
      */
-    public void SetLightColor(Color lightColor) {
-        m_lightColor = lightColor;
+    public void setLightColor(Color lightColor) {
+        this.lightColor = lightColor;
     }
 
     /**
@@ -635,13 +634,13 @@ public class RendererImage {
      *          See the preconditions.
      * @pre The specified light contrast is positive.
      */
-    public void SetLightContrast(double lightContrast) {
+    public void setLightContrast(double lightContrast) {
         if (lightContrast <= 0.0) {
             throw new ExceptionInvalidParam();
         }
 
-        m_lightContrast = lightContrast;
-        m_recalcLightValues = true;
+        this.lightContrast = lightContrast;
+        recalcLightValues = true;
     }
 
     /**
@@ -656,9 +655,9 @@ public class RendererImage {
      *
      * @param lightElev The elevation of the light source.
      */
-    public void SetLightElev(double lightElev) {
-        m_lightElev = lightElev;
-        m_recalcLightValues = true;
+    public void setLightElev(double lightElev) {
+        this.lightElev = lightElev;
+        recalcLightValues = true;
     }
 
     /**
@@ -671,13 +670,13 @@ public class RendererImage {
      *
      * @param lightIntensity The intensity of the light source.
      */
-    public void SetLightIntensity(double lightIntensity) {
+    public void setLightIntensity(double lightIntensity) {
         if (lightIntensity < 0.0) {
             throw new ExceptionInvalidParam();
         }
 
-        m_lightIntensity = lightIntensity;
-        m_recalcLightValues = true;
+        this.lightIntensity = lightIntensity;
+        recalcLightValues = true;
     }
 
     /**
@@ -688,8 +687,8 @@ public class RendererImage {
      *
      * @param sourceNoiseMap The source noise map.
      */
-    public void SetSourceNoiseMap(NoiseMap sourceNoiseMap) {
-        m_pSourceNoiseMap = sourceNoiseMap;
+    public void setSourceNoiseMap(NoiseMap sourceNoiseMap) {
+        this.sourceNoiseMap = sourceNoiseMap;
     }
 
     /// Calculates the destination color.
@@ -701,7 +700,7 @@ public class RendererImage {
     /// @param lightValue The intensity of the light at that position.
     ///
     /// @returns The destination color.
-    private Color CalcDestColor(Color sourceColor, Color backgroundColor, double lightValue) {
+    private Color calcDestColor(Color sourceColor, Color backgroundColor, double lightValue) {
         double sourceRed = (double) sourceColor.red / 255.0;
         double sourceGreen = (double) sourceColor.green / 255.0;
         double sourceBlue = (double) sourceColor.blue / 255.0;
@@ -712,15 +711,15 @@ public class RendererImage {
 
         // First, blend the source color to the background color using the alpha
         // of the source color.
-        double red = Interp.LinearInterp(backgroundRed, sourceRed, sourceAlpha);
-        double green = Interp.LinearInterp(backgroundGreen, sourceGreen, sourceAlpha);
-        double blue = Interp.LinearInterp(backgroundBlue, sourceBlue, sourceAlpha);
+        double red = Interp.linearInterp(backgroundRed, sourceRed, sourceAlpha);
+        double green = Interp.linearInterp(backgroundGreen, sourceGreen, sourceAlpha);
+        double blue = Interp.linearInterp(backgroundBlue, sourceBlue, sourceAlpha);
 
-        if (m_isLightEnabled) {
+        if (isLightEnabled) {
             // Now calculate the light color.
-            double lightRed = lightValue * (double) m_lightColor.red / 255.0;
-            double lightGreen = lightValue * (double) m_lightColor.green / 255.0;
-            double lightBlue = lightValue * (double) m_lightColor.blue / 255.0;
+            double lightRed = lightValue * (double) lightColor.red / 255.0;
+            double lightGreen = lightValue * (double) lightColor.green / 255.0;
+            double lightBlue = lightValue * (double) lightColor.blue / 255.0;
 
             // Apply the light color to the new color.
             red *= lightRed;
@@ -758,25 +757,25 @@ public class RendererImage {
      * @param up     Elevation of the point directly above the center point.
      * @return
      */
-    private double CalcLightIntensity(double center, double left, double right, double down, double up) {
+    private double calcLightIntensity(double center, double left, double right, double down, double up) {
         // Recalculate the sine and cosine of the various light values if
         // necessary so it does not have to be calculated each time this method is
         // called.
-        if (m_recalcLightValues) {
-            m_cosAzimuth = Math.cos(m_lightAzimuth * MathConst.DEG_TO_RAD);
-            m_sinAzimuth = Math.sin(m_lightAzimuth * MathConst.DEG_TO_RAD);
-            m_cosElev = Math.cos(m_lightElev * MathConst.DEG_TO_RAD);
-            m_sinElev = Math.sin(m_lightElev * MathConst.DEG_TO_RAD);
-            m_recalcLightValues = false;
+        if (recalcLightValues) {
+            cosAzimuth = Math.cos(lightAzimuth * MathConst.DEG_TO_RAD);
+            sinAzimuth = Math.sin(lightAzimuth * MathConst.DEG_TO_RAD);
+            cosElev = Math.cos(lightElev * MathConst.DEG_TO_RAD);
+            sinElev = Math.sin(lightElev * MathConst.DEG_TO_RAD);
+            recalcLightValues = false;
         }
 
         // Now do the lighting calculations.
         double I_MAX = 1.0;
-        double io = I_MAX * MathConst.SQRT_2 * m_sinElev / 2.0;
-        double ix = (I_MAX - io) * m_lightContrast * MathConst.SQRT_2 * m_cosElev
-                * m_cosAzimuth;
-        double iy = (I_MAX - io) * m_lightContrast * MathConst.SQRT_2 * m_cosElev
-                * m_sinAzimuth;
+        double io = I_MAX * MathConst.SQRT_2 * sinElev / 2.0;
+        double ix = (I_MAX - io) * lightContrast * MathConst.SQRT_2 * cosElev
+                * cosAzimuth;
+        double iy = (I_MAX - io) * lightContrast * MathConst.SQRT_2 * cosElev
+                * sinAzimuth;
         double intensity = (ix * (left - right) + iy * (down - up) + io);
         if (intensity < 0.0) {
             intensity = 0.0;

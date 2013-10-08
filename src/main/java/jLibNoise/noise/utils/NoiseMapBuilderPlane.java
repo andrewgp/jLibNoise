@@ -21,7 +21,6 @@
  * The developer's email is jlbezigvins@gmzigail.com (for great email, take
  * off every 'zig'.)
  */
-
 package jLibNoise.noise.utils;
 
 import jLibNoise.noise.ExceptionInvalidParam;
@@ -34,67 +33,67 @@ import jLibNoise.noise.model.Plane;
 public class NoiseMapBuilderPlane extends NoiseMapBuilder {
 
     // A flag specifying whether seamless tiling is enabled.
-    private boolean m_isSeamlessEnabled;
+    private boolean isSeamlessEnabled;
     // Lower x boundary of the planar noise map, in units.
-    private double m_lowerXBound;
+    private double lowerXBound;
     // Lower z boundary of the planar noise map, in units.
-    private double m_lowerZBound;
+    private double lowerZBound;
     // Upper x boundary of the planar noise map, in units.
-    private double m_upperXBound;
+    private double upperXBound;
     // Upper z boundary of the planar noise map, in units.
-    private double m_upperZBound;
+    private double upperZBound;
 
     @Override
-    public void Build() {
-        if (m_upperXBound <= m_lowerXBound
-                || m_upperZBound <= m_lowerZBound
-                || m_destWidth <= 0
-                || m_destHeight <= 0
-                || m_pSourceModule == null
-                || m_pDestNoiseMap == null) {
+    public void build() {
+        if (upperXBound <= lowerXBound
+                || upperZBound <= lowerZBound
+                || destWidth <= 0
+                || destHeight <= 0
+                || sourceModule == null
+                || destNoiseMap == null) {
             throw new ExceptionInvalidParam();
         }
 
         // Resize the destination noise map so that it can store the new output values from the source model.
-        m_pDestNoiseMap.SetSize(m_destWidth, m_destHeight);
+        destNoiseMap.setSize(destWidth, destHeight);
 
         // Create the plane model.
         Plane planeModel = new Plane();
-        planeModel.SetModule(m_pSourceModule);
+        planeModel.setModule(sourceModule);
 
-        double xExtent = m_upperXBound - m_lowerXBound;
-        double zExtent = m_upperZBound - m_lowerZBound;
-        double xDelta = xExtent / (double) m_destWidth;
-        double zDelta = zExtent / (double) m_destHeight;
-        double xCur = m_lowerXBound;
-        double zCur = m_lowerZBound;
+        double xExtent = upperXBound - lowerXBound;
+        double zExtent = upperZBound - lowerZBound;
+        double xDelta = xExtent / (double) destWidth;
+        double zDelta = zExtent / (double) destHeight;
+        double xCur;// = lowerXBound;
+        double zCur = lowerZBound;
 
         // Fill every point in the noise map with the output values from the model.
-        ArrayPointer.NativeFloatPrim pDest = m_pDestNoiseMap.GetSlabPtr(0);
-        for (int z = 0; z < m_destHeight; z++) {
-            xCur = m_lowerXBound;
-            for (int x = 0; x < m_destWidth; x++) {
+        ArrayPointer.NativeFloatPrim pDest = destNoiseMap.getSlabPtr(0);
+        for (int z = 0; z < destHeight; z++) {
+            xCur = lowerXBound;
+            for (int x = 0; x < destWidth; x++) {
                 float finalValue;
-                if (!m_isSeamlessEnabled) {
-                    finalValue = (float) planeModel.GetValue(xCur, zCur);
+                if (!isSeamlessEnabled) {
+                    finalValue = (float) planeModel.getValue(xCur, zCur);
                 } else {
                     double swValue, seValue, nwValue, neValue;
-                    swValue = planeModel.GetValue(xCur, zCur);
-                    seValue = planeModel.GetValue(xCur + xExtent, zCur);
-                    nwValue = planeModel.GetValue(xCur, zCur + zExtent);
-                    neValue = planeModel.GetValue(xCur + xExtent, zCur + zExtent);
-                    double xBlend = 1.0 - ((xCur - m_lowerXBound) / xExtent);
-                    double zBlend = 1.0 - ((zCur - m_lowerZBound) / zExtent);
-                    double z0 = Interp.LinearInterp(swValue, seValue, xBlend);
-                    double z1 = Interp.LinearInterp(nwValue, neValue, xBlend);
-                    finalValue = (float) Interp.LinearInterp(z0, z1, zBlend);
+                    swValue = planeModel.getValue(xCur, zCur);
+                    seValue = planeModel.getValue(xCur + xExtent, zCur);
+                    nwValue = planeModel.getValue(xCur, zCur + zExtent);
+                    neValue = planeModel.getValue(xCur + xExtent, zCur + zExtent);
+                    double xBlend = 1.0 - ((xCur - lowerXBound) / xExtent);
+                    double zBlend = 1.0 - ((zCur - lowerZBound) / zExtent);
+                    double z0 = Interp.linearInterp(swValue, seValue, xBlend);
+                    double z1 = Interp.linearInterp(nwValue, neValue, xBlend);
+                    finalValue = (float) Interp.linearInterp(z0, z1, zBlend);
                 }
                 pDest.floatAssignThenIncrementPosition(finalValue);
                 xCur += xDelta;
             }
             zCur += zDelta;
-            if (m_pCallback != null) {
-                m_pCallback.callback(z);
+            if (callback != null) {
+                callback.callback(z);
             }
         }
     }
@@ -107,12 +106,12 @@ public class NoiseMapBuilderPlane extends NoiseMapBuilder {
      *
      * @param enable A flag that enables or disables seamless tiling.
      */
-    public void EnableSeamless(boolean enable) {
-        m_isSeamlessEnabled = enable;
+    public void enableSeamless(boolean enable) {
+        isSeamlessEnabled = enable;
     }
 
-    public void EnableSeamless() {
-        EnableSeamless(true);
+    public void enableSeamless() {
+        enableSeamless(true);
     }
 
     /**
@@ -120,8 +119,8 @@ public class NoiseMapBuilderPlane extends NoiseMapBuilder {
      *
      * @return The lower x boundary of the planar noise map, in units.
      */
-    public double GetLowerXBound() {
-        return m_lowerXBound;
+    public double getLowerXBound() {
+        return lowerXBound;
     }
 
     /**
@@ -129,8 +128,8 @@ public class NoiseMapBuilderPlane extends NoiseMapBuilder {
      *
      * @return The lower z boundary of the noise map, in units.
      */
-    public double GetLowerZBound() {
-        return m_lowerZBound;
+    public double getLowerZBound() {
+        return lowerZBound;
     }
 
     /**
@@ -138,8 +137,8 @@ public class NoiseMapBuilderPlane extends NoiseMapBuilder {
      *
      * @return The upper x boundary of the noise map, in units.
      */
-    public double GetUpperXBound() {
-        return m_upperXBound;
+    public double getUpperXBound() {
+        return upperXBound;
     }
 
     /**
@@ -147,8 +146,8 @@ public class NoiseMapBuilderPlane extends NoiseMapBuilder {
      *
      * @return The upper z boundary of the noise map, in units.
      */
-    public double GetUpperZBound() {
-        return m_upperZBound;
+    public double getUpperZBound() {
+        return upperZBound;
     }
 
     /**
@@ -159,8 +158,8 @@ public class NoiseMapBuilderPlane extends NoiseMapBuilder {
      *
      * @return true if seamless tiling is enabled.
      */
-    public boolean IsSeamlessEnabled() {
-        return m_isSeamlessEnabled;
+    public boolean isSeamlessEnabled() {
+        return isSeamlessEnabled;
     }
 
     /**
@@ -174,14 +173,14 @@ public class NoiseMapBuilderPlane extends NoiseMapBuilder {
      * @pre The lower x boundary is less than the upper x boundary.
      * @pre The lower z boundary is less than the upper z boundary.
      */
-    public void SetBounds(double lowerXBound, double upperXBound, double lowerZBound, double upperZBound) {
+    public void setBounds(double lowerXBound, double upperXBound, double lowerZBound, double upperZBound) {
         if (lowerXBound >= upperXBound || lowerZBound >= upperZBound) {
             throw new ExceptionInvalidParam();
         }
 
-        m_lowerXBound = lowerXBound;
-        m_upperXBound = upperXBound;
-        m_lowerZBound = lowerZBound;
-        m_upperZBound = upperZBound;
+        this.lowerXBound = lowerXBound;
+        this.upperXBound = upperXBound;
+        this.lowerZBound = lowerZBound;
+        this.upperZBound = upperZBound;
     }
 }
