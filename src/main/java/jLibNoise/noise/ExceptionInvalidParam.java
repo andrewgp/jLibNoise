@@ -32,4 +32,12 @@ package jLibNoise.noise;
  * @source 'exception.h'
  */
 public class ExceptionInvalidParam extends RuntimeException {
+
+    public ExceptionInvalidParam() {
+    }
+
+    public ExceptionInvalidParam(String msg) {
+        super(msg);
+    }
+    
 }

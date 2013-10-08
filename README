@@ -19,9 +19,8 @@ Unlike the newer port project of LibNoise on GitHub this one is a 1:1 port with 
 
 At the moment I have a functional build up of all features I think, however there are 3 issues -
 
-- Tutorial 4a is failing the jUnit test (image comparison)
-- Tutorial 4c is failing the jUnit test (image comparison)
-- Tutorial 8 is failing the jUnit test
+- Tutorial 4a+c jUnit tests are slightly out on the green channel
+- Tutorial 8 is failing the jUnit test for image comparison slightly
 
 These will be fixed soon and we should have everything fully working.
 

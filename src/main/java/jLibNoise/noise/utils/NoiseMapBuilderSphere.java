@@ -59,13 +59,23 @@ public class NoiseMapBuilderSphere extends NoiseMapBuilder {
 
     @Override
     public void build() {
-        if (eastLonBound <= westLonBound
-                || northLatBound <= southLatBound
-                || destWidth <= 0
-                || destHeight <= 0
-                || sourceModule == null
-                || destNoiseMap == null) {
-            throw new ExceptionInvalidParam();
+        if (eastLonBound <= westLonBound) {
+            throw new ExceptionInvalidParam("East bound <= West bound");
+        }
+        if (northLatBound <= southLatBound) {
+            throw new ExceptionInvalidParam("North bound <= South bound");
+        }
+        if (destWidth <= 0) {
+            throw new ExceptionInvalidParam("Destination width <= 0");
+        }
+        if (destHeight <= 0) {
+            throw new ExceptionInvalidParam("Destination height <= 0");
+        }
+        if (sourceModule == null) {
+            throw new ExceptionInvalidParam("Source module not defined");
+        }
+        if (destNoiseMap == null) {
+            throw new ExceptionInvalidParam("Destination noise map not defined");
         }
 
         // Resize the destination noise map so that it can store the new output
@@ -151,9 +161,9 @@ public class NoiseMapBuilderSphere extends NoiseMapBuilder {
             throw new ExceptionInvalidParam();
         }
 
-        southLatBound = southLatBound;
-        northLatBound = northLatBound;
-        westLonBound = westLonBound;
-        eastLonBound = eastLonBound;
+        this.southLatBound = southLatBound;
+        this.northLatBound = northLatBound;
+        this.westLonBound = westLonBound;
+        this.eastLonBound = eastLonBound;
     }
 }

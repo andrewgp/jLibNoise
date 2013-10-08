@@ -143,10 +143,10 @@ public class Perlin extends Module {
     @Override
     public double getValue(double x, double y, double z) {
         double value = 0.0;
-        double signal = 0.0;
+        double signal;
         double curPersistence = 1.0;
         double nx, ny, nz;
-        int seed;
+        int localSeed;
 
         x *= frequency;
         y *= frequency;
@@ -160,8 +160,8 @@ public class Perlin extends Module {
             nz = NoiseGen.makeInt32Range(z);
 
             // Get the coherent-noise value from the input value and add it to the final result.
-            seed = (this.seed + curOctave) & 0xffffffff;
-            signal = NoiseGen.gradientCoherentNoise3D(nx, ny, nz, seed, noiseQuality);
+            localSeed = (this.seed + curOctave) & 0xffffffff;
+            signal = NoiseGen.gradientCoherentNoise3D(nx, ny, nz, localSeed, noiseQuality);
             value += signal * curPersistence;
 
             // Prepare the next octave.

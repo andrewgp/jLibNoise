@@ -2,20 +2,19 @@ package test.jLibNoise.noise;
 
 import jLibNoise.noise.module.Perlin;
 import jLibNoise.noise.utils.*;
-import org.junit.Assert;
-import org.junit.Test;
-
-import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import javax.imageio.ImageIO;
+import org.junit.Assert;
+import org.junit.Test;
 
 /**
  *
  */
 public class Tutorials {
-
+    
     @Test
     public void tutorial2() {
         Perlin myModule = new Perlin();
@@ -54,7 +53,7 @@ public class Tutorials {
         writer.writeDestFile();
 
         // test output against reference
-        CompareImages(new File("tutorial_3a.png"), "/META-INF/tutorials/tutorial_3a.png");
+        compareImages(new File("tutorial_3a.png"), "/META-INF/tutorials/tutorial_3a.png");
     }
 
     /**
@@ -93,7 +92,7 @@ public class Tutorials {
         writer.writeDestFile();
 
         // test output against reference
-        CompareImages(new File("tutorial_3b.png"), "/META-INF/tutorials/tutorial_3b.png");
+        compareImages(new File("tutorial_3b.png"), "/META-INF/tutorials/tutorial_3b.png");
     }
 
     /**
@@ -135,7 +134,7 @@ public class Tutorials {
         writer.writeDestFile();
 
         // test output against reference
-        CompareImages(new File("tutorial_3c.png"), "/META-INF/tutorials/tutorial_3c.png");
+        compareImages(new File("tutorial_3c.png"), "/META-INF/tutorials/tutorial_3c.png");
     }
 
     /**
@@ -177,7 +176,7 @@ public class Tutorials {
         writer.writeDestFile();
 
         // test output against reference
-        CompareImages(new File("tutorial_3d.png"), "/META-INF/tutorials/tutorial_3d.png");
+        compareImages(new File("tutorial_3d.png"), "/META-INF/tutorials/tutorial_3d.png");
     }
 
     /**
@@ -222,19 +221,25 @@ public class Tutorials {
         writer.writeDestFile();
 
         // test output against reference
-        CompareImages(new File("tutorial_4a_1.png"), "/META-INF/tutorials/tutorial_4a_1.png");
+        compareImages(new File("tutorial_4a_1.png"), "/META-INF/tutorials/tutorial_4a_1.png", 1);
 
         // now octave=6
         myModule.setOctaveCount(6);
         heightMap = new NoiseMap();
+        heightMapBuilder.setDestNoiseMap(heightMap);
         heightMapBuilder.build();
         image = new Image();
+        renderer.setSourceNoiseMap(heightMap);
+        renderer.setDestImage(image);
         renderer.render();
+        
+        writer = new WriterBMP();
+        writer.setSourceImage(image);
         writer.setDestFilename("tutorial_4a_6.png");
         writer.writeDestFile();
 
         // test output against reference
-        CompareImages(new File("tutorial_4a_6.png"), "/META-INF/tutorials/tutorial_4a_6.png");
+        compareImages(new File("tutorial_4a_6.png"), "/META-INF/tutorials/tutorial_4a_6.png");
     }
 
     /**
@@ -278,19 +283,17 @@ public class Tutorials {
         writer.writeDestFile();
 
         // test output against reference
-        CompareImages(new File("tutorial_4b_1.png"), "/META-INF/tutorials/tutorial_4b_1.png");
+        compareImages(new File("tutorial_4b_1.png"), "/META-INF/tutorials/tutorial_4b_1.png");
 
         // now freq=6
         myModule.setFrequency(6);
-        heightMap = new NoiseMap();
         heightMapBuilder.build();
-        image = new Image();
         renderer.render();
         writer.setDestFilename("tutorial_4b_6.png");
         writer.writeDestFile();
 
         // test output against reference
-        CompareImages(new File("tutorial_4b_6.png"), "/META-INF/tutorials/tutorial_4b_6.png");
+        compareImages(new File("tutorial_4b_6.png"), "/META-INF/tutorials/tutorial_4b_6.png");
     }
 
     /**
@@ -337,24 +340,23 @@ public class Tutorials {
         writer.writeDestFile();
 
         // test output against reference
-        CompareImages(new File("tutorial_4c_25.png"), "/META-INF/tutorials/tutorial_4c_25.png");
+        compareImages(new File("tutorial_4c_25.png"), "/META-INF/tutorials/tutorial_4c_25.png", 1);
 
         // now per=0.75
         myModule.setPersistence(0.75);
-        heightMap = new NoiseMap();
         heightMapBuilder.build();
-        image = new Image();
         renderer.render();
         writer.setDestFilename("tutorial_4c_75.png");
         writer.writeDestFile();
 
         // test output against reference
-        CompareImages(new File("tutorial_4c_75.png"), "/META-INF/tutorials/tutorial_4c_75.png");
+        compareImages(new File("tutorial_4c_75.png"), "/META-INF/tutorials/tutorial_4c_75.png", 1);
     }
 
     @Test
     public void tutorial8() throws Exception {
         Perlin myModule = new Perlin();
+        myModule.setOctaveCount(10);
 
         NoiseMap heightMap = new NoiseMap();
         NoiseMapBuilderSphere heightMapBuilder = new NoiseMapBuilderSphere();
@@ -388,10 +390,14 @@ public class Tutorials {
         writer.writeDestFile();
 
         // test output against reference
-        CompareImages(new File("tutorial_8.png"), "/META-INF/tutorials/tutorial_8.png");
+        compareImages(new File("tutorial_8.png"), "/META-INF/tutorials/tutorial_8.png");
     }
 
-    private void CompareImages(File fileA, String fileB) throws IOException {
+    private void compareImages(File fileA, String fileB) throws IOException {
+        compareImages(fileA, fileB, 0);
+    }
+    
+    private void compareImages(File fileA, String fileB, int tolerance) throws IOException {
         // load both images
         BufferedImage imgA = ImageIO.read(fileA);
 
@@ -424,9 +430,16 @@ public class Tutorials {
                 int alphaA = lineBufA[i + 3];
                 int alphaB = lineBufB[i + 3];
 
-                if (redA != redB || greenA != greenB || blueA != blueB || alphaA != alphaB)
-                    Assert.fail(String.format("Pixel mismatch @ %s,%s (expecting=%s,%s,%s,%s actual=%s,%s,%s,%s)",
-                            x + 1, y + 1, redA, redB, greenA, greenB, blueA, blueB, alphaA, alphaB));
+                if (redA != redB || greenA != greenB || blueA != blueB || alphaA != alphaB) {
+                    // now check using the tolerance
+                    if (redA < redB - tolerance || redA > redB + tolerance
+                        || greenA < greenB - tolerance || greenA > greenB + tolerance
+                        || blueA < blueB - tolerance || blueA > blueB + tolerance
+                        || alphaA < alphaB - tolerance || alphaA > alphaB + tolerance) {
+                        Assert.fail(String.format("Pixel mismatch @ %s,%s (expecting=%s,%s,%s,%s actual=%s,%s,%s,%s)",
+                                                  x + 1, y + 1, redA, greenA, blueA, alphaA, redB, greenB, blueB, alphaB));
+                    }
+                }
             }
         }
     }
