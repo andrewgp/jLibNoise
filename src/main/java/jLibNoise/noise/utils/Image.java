@@ -117,10 +117,8 @@ public class Image {
      *
      * @param width  The width of the new image.
      * @param height The height of the new image.
-     * @throws jLibNoise.noise.ExceptionInvalidParam
-     *          See the preconditions.
-     * @throws jLibNoise.noise.ExceptionOutOfMemory
-     *          Out of memory.
+     * @throws jLibNoise.noise.ExceptionInvalidParam    See the preconditions.
+     * @throws jLibNoise.noise.ExceptionOutOfMemory     Out of memory.
      * @pre The width and height values are positive.
      * @pre The width and height values do not exceed the maximum possible width and height for the image.
      */
@@ -133,8 +131,7 @@ public class Image {
      * Copy constructor.
      *
      * @param rhs Image to copy
-     * @throws jLibNoise.noise.ExceptionOutOfMemory
-     *          Out of memory.
+     * @throws jLibNoise.noise.ExceptionOutOfMemory     Out of memory.
      */
     public Image(Image rhs) {
         initObj();
@@ -171,7 +168,6 @@ public class Image {
      */
     public Color getConstSlabPtr() {
         throw new NotImplementedException();
-//      return m_pImage;
     }
 
     /**
@@ -228,9 +224,8 @@ public class Image {
      *
      * @return A pointer to a slab at the position (0, 0), or @a NULL if the image is empty.
      */
-    public Color getSlabPtr() {
-//        return m_pImage;
-        throw new NotImplementedException();
+    public ArrayPointer<Color> getSlabPtr() {
+        return getSlabPtr(0, 0);
     }
 
     /**
@@ -341,7 +336,7 @@ public class Image {
      * @param borderValue The color value to use for all positions outside of the image.
      */
     public void setBorderValue(Color borderValue) {
-        borderValue = borderValue;
+        this.borderValue = borderValue;
     }
 
     /**
@@ -508,5 +503,4 @@ public class Image {
         memUsed = 0;
         borderValue = new Color(0, 0, 0, 0);
     }
-
 }

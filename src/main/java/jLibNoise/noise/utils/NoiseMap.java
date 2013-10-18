@@ -292,8 +292,7 @@ public class NoiseMap {
     public float getValue(int x, int y) {
         if (noiseMap != null) {
             if (x >= 0 && x < width && y >= 0 && y < height) {
-//                return*(GetConstSlabPtr(x, y));
-                throw new NotImplementedException();
+                return noiseMap[x * y];
             }
         }
         // The coordinates specified are outside the noise map.  Return the border
@@ -408,8 +407,7 @@ public class NoiseMap {
     public void setValue(int x, int y, float value) {
         if (noiseMap != null) {
             if (x >= 0 && x < width && y >= 0 && y < height) {
-//                *(GetSlabPtr(x, y)) = value;
-                throw new NotImplementedException();
+                noiseMap[x * y] = value;
             }
         }
     }

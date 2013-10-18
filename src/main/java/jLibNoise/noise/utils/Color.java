@@ -37,16 +37,16 @@ package jLibNoise.noise.utils;
  */
 public class Color {
     // Value of the alpha (transparency) channel.
-    short alpha;
+    public short alpha;
 
     // Value of the blue channel.
-    short blue;
+    public short blue;
 
     // Value of the green channel.
-    short green;
+    public short green;
 
     // Value of the red channel.
-    short red;
+    public short red;
 
     public Color() {
     }
@@ -65,23 +65,31 @@ public class Color {
      * @param a Value of the alpha (transparency) channel.
      */
     public Color(short r, short g, short b, short a) {
-        if (r > 255)
+        if (r > 255) {
             r = 255;
-        if (g > 255)
+        }
+        if (g > 255) {
             g = 255;
-        if (b > 255)
+        }
+        if (b > 255) {
             b = 255;
-        if (a > 255)
+        }
+        if (a > 255) {
             a = 255;
+        }
 
-        if (r < 0)
+        if (r < 0) {
             r = 0;
-        if (g < 0)
+        }
+        if (g < 0) {
             g = 0;
-        if (b < 0)
+        }
+        if (b < 0) {
             b = 0;
-        if (a < 0)
+        }
+        if (a < 0) {
             a = 0;
+        }
 
         this.red = r;
         this.green = g;
@@ -91,5 +99,9 @@ public class Color {
 
     public Color(int r, int g, int b, int a) {
         this((short) r, (short) g, (short) b, (short) a);
+    }
+
+    public int toIntensity() {
+        return (int)((red + green + blue) / 3);
     }
 }

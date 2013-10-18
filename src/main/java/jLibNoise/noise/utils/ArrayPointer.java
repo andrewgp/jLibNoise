@@ -60,6 +60,10 @@ public class ArrayPointer<T> implements Pointer<T> {
     public void copyTo(ArrayPointer<T> dest) {
         System.arraycopy(array, position, dest.array, position, getSize() - position);
     }
+    
+    public T[] getRaw() {
+        return array;
+    }
 
     public static class NativeFloatPrim {
 
